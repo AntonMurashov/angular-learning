@@ -1,0 +1,81 @@
+.course-item {
+    margin: 40px;
+    padding: 20px;
+    background-color:white;
+    font-family: 'Arial';
+    white-space: nowrap;
+}
+.flex-row {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.flex-column {
+    display: flex;
+    flex-direction: row;
+}
+.button-container {
+    margin-left: 30px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    vertical-align: middle;    
+}
+
+.row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: normal;
+    &:last-child {
+        justify-content: flex-end;
+    }
+}
+
+.col {
+    flex: 1;
+    display: flexbox;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding-top: 30px;
+    padding-left: 30px;
+    margin-left: 30px;
+}    
+
+.title {
+    font-size: 36px;
+    display: flex;
+    justify-content: flex-start;
+    font-weight: bold;
+    font-style: normal;
+    color: darkblue;
+}
+    
+.date {
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-style: italic;
+    color:gray;
+}
+
+.description {
+    font-weight: normal;
+    color: black;
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    justify-content: flex-start;
+}
+    
+.button {
+    width: 100px;
+    margin: 20px;
+    margin-left: 40px;
+    margin-top: 80px;
+    align-content: center;
+    align-items: center;
+}
+    
+    

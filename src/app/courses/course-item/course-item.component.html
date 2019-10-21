@@ -1,0 +1,18 @@
+<div class="course-item flex-column">
+    <div class="flex-row">
+        <div class="row">
+            <div class="col title">{{item.title}}</div>
+            <div class="col date">{{item.durationMin}} min</div>
+            <div class="col date">{{item.creationDate | date: mediumDate}}</div>
+        </div>
+        <div class="row">
+            <div class="col description">{{item.description}}</div>
+        </div>
+    </div>
+    <div>
+        <button class="button">Edit</button>
+    </div>            
+    <div>
+        <button class="button">Delete</button>
+    </div>            
+</div>
