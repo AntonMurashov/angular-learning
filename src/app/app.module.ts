@@ -3,18 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { CoursesComponent } from './courses/courses.component';
-import { CourseItemComponent } from './courses/course-item/course-item.component';
+import { CoursesModule } from './courses/courses.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CoursesComponent,
-    CourseItemComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    CoreModule
+    CoreModule,
+    CoursesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
