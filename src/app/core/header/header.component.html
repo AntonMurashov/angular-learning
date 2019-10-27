@@ -1,17 +1,13 @@
 <div class="header">
-    <angular-logo></angular-logo>
-    <div class="title">          
-        Video portal
+    <div class="logo">
+        <angular-logo></angular-logo>
     </div>
-    <div class="col">
-        <a class="profile">
-            <a href="">User login</a>
-        </a>
+    <div class="profile">
+        <img src="assets/img/ic-user.svg">
+        User login
     </div>
-    <div class="col">
-        <a class="profile">
-            <a href="">Log off</a>
-        </a>
+    <div class="profile" (click)="exit()">
+        <img src="assets/img/ic-exit.svg">
+        Log off
     </div>
 </div>
-      

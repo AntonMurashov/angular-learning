@@ -1,15 +1,24 @@
 .breadcrumb {
-    height: 40px;
-    padding: 20px;
-    display: flex;
-    background-color: lightyellow;
-    font-family: 'Arial';
-    font-weight: bold;
-    color: blue;
-}
-.title {
-    flex: 1;
+    height: 60px;
+    background-color: white;
+    position: fixed;
+    width: 100%;
+    top: 60px;
     display: flex;
     align-items: center;
+}
+
+.title {
+    width: 48px;
+    height: 24px;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: normal;
+    color:  #414452;
+    padding-left: 6.6%;
 }
   
