@@ -15,14 +15,14 @@ export class CoursesComponent implements OnInit {
 
   public searchStr = '';
 
-  constructor(cs: CourseService) { 
+  constructor(cs: CourseService) {
     this._cs = cs;
   }
-  
-    ngOnInit() {
+
+  ngOnInit() {
     this.items = this._cs.findAll();
   }
-  
+
   public onSearchClick() {
     console.log(this.searchStr);
   }

@@ -2,15 +2,15 @@
   padding: 0 6.6%;
 }
 
+.header {
+  height: 120px;
+}
+
 .input {
   padding-top: 20px;
 }
 
-.c1 {
-  height: 120px;
-}
-
-.button {
+.add-button {
   width: 138px;
   height: 36px;
   line-height: 1.83;
@@ -66,8 +66,3 @@
   color: grey;
 }
 
-.edit-copy {
-  width: 18px;
-  height: 18px;
-  color: grey;
-}

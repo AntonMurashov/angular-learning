@@ -5,23 +5,8 @@
     background-color:white;
     font-family: sans-serif;
     white-space: nowrap;
-}
-
-.flex-row {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-.flex-column {
     display: flex;
     flex-direction: row;
-}
-.button-container {
-    margin-left: 30px;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    vertical-align: middle;    
 }
 
 .button-item {
@@ -130,15 +115,3 @@
     background-size: 15px;
     background-position: 10px;
 }
-    
-.icon {
- width: 15px;
- height: 16px;
- font-size: 16px;
- font-weight: normal;
- font-stretch: normal;
- font-style: normal;
- line-height: normal;
- letter-spacing: normal;
- color: red;
-}    
