@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { ICourse } from './course-item/course-item.component';
 
@@ -19,7 +19,7 @@ export class CoursesComponent implements OnInit {
     this._cs = cs;
   }
   
-  ngOnInit() {
+    ngOnInit() {
     this.items = this._cs.findAll();
   }
   

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 export class Course implements ICourse {
   id: number;
@@ -22,14 +22,21 @@ export interface ICourse {
   styleUrls: ['./course-item.component.scss']
 })
 export class CourseItemComponent implements OnInit {
-  
+
   @Input()
   public item: ICourse;
   @Output('onDeleteCourse') onDelete: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() { }
+  constructor() {
+    console.log('Constructor started');
+  }
 
   ngOnInit() {
+    console.log('ngOnInit called');
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    console.log('OnChanges ', changes);
   }
 
   public delete(): void {
