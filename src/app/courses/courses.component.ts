@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { ICourse } from './course-item/course-item.component';
 
