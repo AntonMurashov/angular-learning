@@ -1,7 +1,60 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CourseItemComponent } from './course-item.component';
-import { SimpleChange } from '@angular/core';
+import { CourseItemComponent, ICourse } from './course-item.component';
+import { SimpleChange, Component } from '@angular/core';
+import { By } from '@angular/platform-browser';
+
+@Component({
+  template: `<angular-course-item (onDeleteCourse)="onDeleteCourse($event)" [item]="item">
+  </angular-course-item>`
+})
+class TestHostComponent {
+  public item = {
+    id: 1,
+    title: "title",
+    creationDate: new Date(),
+    durationMin: 0,
+    description: "description"
+  };
+  public itemToDelete: number;
+  public onDeleteCourse(currentItem: number) {
+    this.itemToDelete = currentItem;
+  } 
+}
+
+describe('TestHostComponent', () => {
+  let testHost: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
+  let item: ICourse;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ CourseItemComponent, TestHostComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestHostComponent);
+    testHost = fixture.componentInstance;
+    fixture.detectChanges();
+  });  
+
+  it('should emit delete item', () => {
+    fixture.detectChanges();
+    const itemToDelete = {
+      id: 1,
+      title: "title",
+      creationDate: new Date(),
+      durationMin: 0,
+      description: "description"
+    };
+    const deleteButton = fixture.debugElement.query(By.css('button.button-delete'));
+    deleteButton.triggerEventHandler('click', null);
+ 
+    expect(testHost.itemToDelete).toEqual(itemToDelete.id);
+ });  
+})
 
 describe('CourseItemComponent', () => {
   let component: CourseItemComponent;
@@ -54,13 +107,30 @@ describe('CourseItemComponent', () => {
 
     expect(spy).toHaveBeenCalledWith('Edit on course ' + component.item.id + ' clicked');
   });
-/*
+
   it('should log on ngOnChanges', () => {
     const spy = spyOn(console, 'log');
-    let changes = SimpleChange
+    let changes = {
+      item: new SimpleChange(component.item, null, true)
+    }
 
     component.ngOnChanges(changes);
+    fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith('OnChanges ', changes);
-  });*/
+  });
+
+  it('should show title and time', () => {
+    expect(fixture.nativeElement.querySelector('div.title').innerText).toEqual(component.item.title);
+    expect(fixture.nativeElement.querySelector('div.time').innerText).toEqual(component.item.durationMin + " min");
+  });
+
+  it('should listen for form changes', () => {
+    spyOn(component.onDelete, 'emit');
+    let button = fixture.debugElement.nativeElement.querySelector('button.button-delete');
+    button.click();
+    fixture.detectChanges();
+ 
+    expect(component.onDelete.emit).toHaveBeenCalled();
+  });  
 });
