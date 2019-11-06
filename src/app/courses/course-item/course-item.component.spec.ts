@@ -41,7 +41,6 @@ describe('TestHostComponent', () => {
   });  
 
   it('should emit delete item', () => {
-    fixture.detectChanges();
     const itemToDelete = {
       id: 1,
       title: "title",
@@ -93,7 +92,7 @@ describe('CourseItemComponent', () => {
   it('should call edit', () => {
     let spy = spyOn(component, 'edit');
 
-    let button = fixture.debugElement.nativeElement.querySelector('button.button-edit');
+    let button = fixture.debugElement.query(By.css('button.button-edit')).nativeElement;
     button.click();
 
     expect(spy).toHaveBeenCalled();
@@ -102,7 +101,7 @@ describe('CourseItemComponent', () => {
   it('should log on edit', () => {
     const spy = spyOn(console, 'log');
 
-    let button = fixture.debugElement.nativeElement.querySelector('button.button-edit');
+    let button = fixture.debugElement.query(By.css('button.button-edit')).nativeElement;
     button.click();
 
     expect(spy).toHaveBeenCalledWith('Edit on course ' + component.item.id + ' clicked');
@@ -115,21 +114,19 @@ describe('CourseItemComponent', () => {
     }
 
     component.ngOnChanges(changes);
-    fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith('OnChanges ', changes);
   });
 
   it('should show title and time', () => {
-    expect(fixture.nativeElement.querySelector('div.title').innerText).toEqual(component.item.title);
-    expect(fixture.nativeElement.querySelector('div.time').innerText).toEqual(component.item.durationMin + " min");
+    expect(fixture.debugElement.query(By.css('div.title')).nativeElement.innerText).toEqual(component.item.title);
+    expect(fixture.debugElement.query(By.css('div.time')).nativeElement.innerText).toEqual(component.item.durationMin + " min");
   });
 
   it('should listen for form changes', () => {
     spyOn(component.onDelete, 'emit');
-    let button = fixture.debugElement.nativeElement.querySelector('button.button-delete');
+    let button = fixture.debugElement.query(By.css('button.button-delete')).nativeElement;
     button.click();
-    fixture.detectChanges();
  
     expect(component.onDelete.emit).toHaveBeenCalled();
   });  
