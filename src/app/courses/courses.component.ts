@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { ICourse } from './course-item/course-item.component';
 
@@ -11,16 +11,13 @@ export class CoursesComponent implements OnInit {
 
   public items: ICourse[];
 
-  private _cs: CourseService;
-
   public searchStr = '';
 
-  constructor(cs: CourseService) {
-    this._cs = cs;
+  constructor(private cs: CourseService) {
   }
 
   ngOnInit() {
-    this.items = this._cs.findAll();
+    this.items = this.cs.findAll();
   }
 
   public onSearchClick() {
