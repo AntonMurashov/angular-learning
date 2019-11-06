@@ -1,8 +1,19 @@
-<div class="input">
-    <input placeholder="Text to search"><button type="button">Search</button>
+<div class="parent">
+    <div class="header">
+        <div class="input">
+            <i class="input-icon"></i>
+            <input placeholder="Text to search" class="input-search" [(ngModel)]="searchStr">
+            <button class="search-button" (click)="onSearchClick()">Search</button>
+        </div>
+        <div>
+            <button class="add-button" (click)="addCourse()">Add course</button>
+        </div>
+    </div>
+    <div>
+        <angular-course-item (onDeleteCourse)="onDeleteCourse($event)" *ngFor="let item of items" [item]="item">
+        </angular-course-item>
+    </div>
+    <div>
+        <angular-load-more></angular-load-more>
+    </div>
 </div>
-<div class="add-course">
-    <button type="button">Add course</button>
-</div>
-<angular-course-item *ngFor="let item of items" [item]="item"></angular-course-item>
-          
