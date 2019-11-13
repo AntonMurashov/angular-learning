@@ -30,7 +30,7 @@ export class CourseItemComponent implements OnInit {
   @Output('onDeleteCourse') onDelete: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
-    //console.log('Constructor started');
+    console.log('Constructor started');
   }
 
   ngOnInit() {

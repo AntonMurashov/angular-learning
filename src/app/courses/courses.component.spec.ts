@@ -5,6 +5,7 @@ import { LoadMoreComponent } from './load-more/load-more.component';
 import { CourseItemComponent, ICourse } from './course-item/course-item.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { By } from '@angular/platform-browser';
 import { OrderByPipe } from '../pipes/order-by.pipe';
 import { NoItemsComponent } from './no-items/no-items.component';
 import { CheckDateDirective } from '../directives/check-date.directive';
@@ -40,7 +41,7 @@ describe('CoursesComponent', () => {
   it('should call addCourse', () => {
     let spy = spyOn(component, 'addCourse');
 
-    let button = fixture.debugElement.nativeElement.querySelector('button.add-button');
+    let button = fixture.debugElement.query(By.css('button.add-button')).nativeElement;
     button.click();
 
     expect(spy).toHaveBeenCalled();
@@ -49,7 +50,7 @@ describe('CoursesComponent', () => {
   it('should log on addCourse', () => {
     const spy = spyOn(console, 'log');
 
-    let button = fixture.debugElement.nativeElement.querySelector('button.add-button');
+    let button = fixture.debugElement.query(By.css('button.add-button')).nativeElement;
     button.click();
 
     expect(spy).toHaveBeenCalledWith('AddCourse clicked');
@@ -58,7 +59,7 @@ describe('CoursesComponent', () => {
   it('should call onSearchClick', () => {
     let spy = spyOn(component, 'onSearchClick');
 
-    let button = fixture.debugElement.nativeElement.querySelector('button.search-button');
+    let button = fixture.debugElement.query(By.css('button.search-button')).nativeElement;
     button.click();
 
     expect(spy).toHaveBeenCalled();
@@ -67,7 +68,7 @@ describe('CoursesComponent', () => {
   it('should log on onSearchClick', () => {
     console.log(component.visibleItems);
     let oldVisibleItems: ICourse[] = JSON.parse(JSON.stringify(component.visibleItems));
-    let button = fixture.debugElement.nativeElement.querySelector('button.search-button');
+    let button = fixture.debugElement.query(By.css('button.search-button')).nativeElement;
     component.searchStr = '2';
     button.click();
 
