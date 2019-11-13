@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
 import { LogoComponent } from './logo/logo.component';
-import { By } from '@angular/platform-browser';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -28,7 +27,7 @@ describe('HeaderComponent', () => {
   it('should call exit', () => {
     let spy = spyOn(component, 'exit');
 
-    let button = fixture.debugElement.query(By.css('img.exit')).nativeElement;
+    let button = fixture.debugElement.nativeElement.querySelector("img[src='assets/img/ic-exit.svg']");
     button.click();
 
     expect(spy).toHaveBeenCalled();
@@ -37,7 +36,7 @@ describe('HeaderComponent', () => {
   it('should log on exit', () => {
     const spy = spyOn(console, 'log');
 
-    let button = fixture.debugElement.query(By.css('img.exit')).nativeElement;
+    let button = fixture.debugElement.nativeElement.querySelector("img[src='assets/img/ic-exit.svg']");
     button.click();
 
     expect(spy).toHaveBeenCalledWith('Exit clicked');

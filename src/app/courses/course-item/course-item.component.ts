@@ -6,6 +6,7 @@ export class Course implements ICourse {
   creationDate: Date;
   durationMin: number;
   description: string;
+  topRated: boolean;
 }
 
 export interface ICourse {
@@ -14,6 +15,7 @@ export interface ICourse {
   creationDate: Date;
   durationMin: number;
   description: string;
+  topRated: boolean;
 }
 
 @Component({
@@ -28,7 +30,7 @@ export class CourseItemComponent implements OnInit {
   @Output('onDeleteCourse') onDelete: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
-    console.log('Constructor started');
+    //console.log('Constructor started');
   }
 
   ngOnInit() {
