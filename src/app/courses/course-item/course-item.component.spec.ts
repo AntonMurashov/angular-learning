@@ -1,10 +1,61 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CourseItemComponent } from './course-item.component';
-import { SimpleChange } from '@angular/core';
+import { CourseItemComponent, ICourse } from './course-item.component';
+import { SimpleChange, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { CheckDateDirective } from '../../directives/check-date.directive';
+
+@Component({
+  template: `<angular-course-item (onDeleteCourse)="onDeleteCourse($event)" [item]="item">
+  </angular-course-item>`
+})
+class TestHostComponent {
+  public item = {
+    id: 1,
+    title: "title",
+    creationDate: new Date(),
+    durationMin: 0,
+    description: "description"
+  };
+  public itemToDelete: number;
+  public onDeleteCourse(currentItem: number) {
+    this.itemToDelete = currentItem;
+  }
+}
+
+describe('TestHostComponent', () => {
+  let testHost: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
+  let item: ICourse;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CourseItemComponent, TestHostComponent, DurationPipe, CheckDateDirective]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestHostComponent);
+    testHost = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should emit delete item', () => {
+    const itemToDelete = {
+      id: 1,
+      title: "title",
+      creationDate: new Date(),
+      durationMin: 0,
+      description: "description"
+    };
+    const deleteButton = fixture.debugElement.query(By.css('button.button-delete'));
+    deleteButton.triggerEventHandler('click', null);
+
+    expect(testHost.itemToDelete).toEqual(itemToDelete.id);
+  });
+})
 
 describe('CourseItemComponent', () => {
   let component: CourseItemComponent;
@@ -12,9 +63,9 @@ describe('CourseItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent, DurationPipe, CheckDateDirective ]
+      declarations: [CourseItemComponent, DurationPipe, CheckDateDirective]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -81,7 +132,7 @@ describe('CourseItemComponent', () => {
     let button = fixture.debugElement.query(By.css('button.button-delete')).nativeElement;
     button.click();
     fixture.detectChanges();
- 
+
     expect(component.onDelete.emit).toHaveBeenCalled();
- });
+  });
 });
