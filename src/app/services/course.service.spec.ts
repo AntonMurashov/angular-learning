@@ -14,4 +14,23 @@ describe('CourseService', () => {
     const service: CourseService = TestBed.get(CourseService);
     expect(service.findAll().length).toEqual(5);
   });
+
+  it('should return course on getcourse', () => {
+    const service: CourseService = TestBed.get(CourseService);
+    expect(service.getCourse(1).id).toEqual(1);
+  });
+
+  it('should log on createCourse', () => {
+    const spy = spyOn(console, 'log');
+    const service: CourseService = TestBed.get(CourseService);
+    service.createCourse();
+    expect(spy).toHaveBeenCalledWith('AddCourse clicked');
+  });
+
+  it('should log on updateCourse', () => {
+    const spy = spyOn(console, 'log');
+    const service: CourseService = TestBed.get(CourseService);
+    service.updateCourse(1);
+    expect(spy).toHaveBeenCalledWith('Updating course 1');
+  });
 });

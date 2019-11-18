@@ -2,11 +2,11 @@
     <div class="logo">
         <angular-logo></angular-logo>
     </div>
-    <div class="profile user">
-        <img class="user" src="assets/img/ic-user.svg">
-        User login
+    <div class="profile user" *ngIf="isAuth">
+        <img src="assets/img/ic-user.svg">
+        {{userName}}
     </div>
-    <div class="profile" (click)="exit()">
+    <div class="profile" (click)="exit()" *ngIf="isAuth">
         <img class="exit" src="assets/img/ic-exit.svg">
         Log off
     </div>

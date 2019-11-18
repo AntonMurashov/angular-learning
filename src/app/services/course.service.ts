@@ -8,8 +8,8 @@ export class CourseService {
 
   constructor() { }
 
-  private getMockCourses(): Course[] {
-    return [
+  private static mockCourses: Course[] =
+    [
       {
         id: 1,
         title: "Video Course 1. Name 1",
@@ -51,9 +51,27 @@ export class CourseService {
         topRated: false
       }
     ];
-  }
+  
 
   public findAll(): ICourse[] {
-    return this.getMockCourses();
+    return CourseService.mockCourses;
+  }
+
+  public createCourse(): ICourse[] {
+    console.log('AddCourse clicked');
+    return CourseService.mockCourses;
+  }
+
+  public deleteCourse(id: number): ICourse[] {
+    CourseService.mockCourses = CourseService.mockCourses.filter((course: ICourse) => course.id !== id);
+    return CourseService.mockCourses;
+  }
+
+  public getCourse(id: number): ICourse {
+    return CourseService.mockCourses.find((course: ICourse) => course.id == id);
+  }
+
+  public updateCourse(id: number) {
+    console.log('Updating course ' + id);
   }
 }

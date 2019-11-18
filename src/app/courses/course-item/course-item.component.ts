@@ -42,7 +42,9 @@ export class CourseItemComponent implements OnInit {
   }
 
   public delete(): void {
-    this.onDelete.emit(this.item.id);
+    if (confirm("Do you really want to delete course " + this.item.title + "?")) {
+      this.onDelete.emit(this.item.id);
+    }
   }
 
   public edit(): void {

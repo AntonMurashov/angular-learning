@@ -28,11 +28,11 @@ export class CoursesComponent implements OnInit {
   }
 
   public addCourse() {
-    console.log('AddCourse clicked');
+    this.items = this.cs.createCourse();
   }
 
   public onDeleteCourse(id: number): void {
-    this.items = this.items.filter((course: ICourse) => course.id !== id);
-    this.visibleItems = this.visibleItems.filter((course: ICourse) => course.id !== id);
+    this.items = this.cs.deleteCourse(id);
+    this.visibleItems = this.items;
   }
 }

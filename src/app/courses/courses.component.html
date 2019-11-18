@@ -17,6 +17,6 @@
         </angular-course-item>
     </div>
     <div>
-        <angular-load-more></angular-load-more>
+        <angular-load-more *ngIf="visibleItems.length > 0"></angular-load-more>
     </div>
 </div>

@@ -11,10 +11,12 @@ import { NoItemsComponent } from './no-items/no-items.component';
 import { CheckDateDirective } from '../directives/check-date.directive';
 import { DurationPipe } from '../pipes/duration.pipe';
 import { FindPipe } from '../pipes/find.pipe';
+import { CourseService } from '../services/course.service';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
+  let courseService: CourseService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,7 +25,7 @@ describe('CoursesComponent', () => {
         FormsModule,
         CommonModule
       ],
-      providers: [FindPipe]
+      providers: [FindPipe, CourseService]
     })
     .compileComponents();
   }));
@@ -31,6 +33,7 @@ describe('CoursesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
+    courseService = TestBed.get(CourseService);
     fixture.detectChanges();
   });
 
@@ -47,13 +50,13 @@ describe('CoursesComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should log on addCourse', () => {
-    const spy = spyOn(console, 'log');
-
+  it('should call service on addCourse', () => {
+    const spy = spyOn(courseService, 'createCourse');
+    
     let button = fixture.debugElement.query(By.css('button.add-button')).nativeElement;
     button.click();
 
-    expect(spy).toHaveBeenCalledWith('AddCourse clicked');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call onSearchClick', () => {
@@ -73,5 +76,12 @@ describe('CoursesComponent', () => {
     button.click();
 
     expect(component.visibleItems.map(i => i.id)).toEqual(oldVisibleItems.filter(i => i.title.includes(component.searchStr)).map(i => i.id));
+  });
+  
+  it('should call service on init', () => {
+    const spy = spyOn(courseService, 'findAll');
+    component.ngOnInit();
+    
+    expect(spy).toHaveBeenCalled();
   });
 });
