@@ -1,20 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Consts } from '../consts/consts';
 
 @Pipe({
   name: 'duration'
 })
 export class DurationPipe implements PipeTransform {
 
-  transform(duration: number): any {
-    if (duration < 60) {
+  transform(duration: number): string {
+    if (duration < Consts.MIN_IN_HOUR) {
       return duration + ' min';
     }
-    else if (duration % 60 == 0) {
-      return (Math.floor(duration/60)) + ' h';
+    if (duration % Consts.MIN_IN_HOUR == 0) {
+      return (Math.floor(duration/Consts.MIN_IN_HOUR)) + ' h';
     }
-    else {
-      return (Math.floor(duration/60)) + ' h ' + (duration % 60) + " min";
-    }
+    return (Math.floor(duration/Consts.MIN_IN_HOUR)) + ' h ' + (duration % 60) + " min";
   }
 
 }

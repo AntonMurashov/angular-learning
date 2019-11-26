@@ -1,4 +1,6 @@
 import { OrderByPipe } from './order-by.pipe';
+import { Sort } from '../enums/sort.enum';
+import { Consts } from '../consts/consts';
 
 describe('OrderByPipe', () => {
   let pipe = new OrderByPipe();
@@ -13,7 +15,7 @@ describe('OrderByPipe', () => {
   {
     id: 2,
     title: "title",
-    creationDate: new Date(new Date().getTime() + 1 * 24 * 3600 * 1000),
+    creationDate: new Date(new Date().getTime() + 1 * Consts.HRS_IN_DAY * Consts.MIN_IN_HOUR * Consts.SEC_IN_MIN * Consts.MSEC_IN_SEC),
     durationMin: 0,
     description: "description",
     topRated: true
@@ -21,7 +23,7 @@ describe('OrderByPipe', () => {
   {
     id: 3,
     title: "title",
-    creationDate: new Date(new Date().getTime() - 15 * 24 * 3600 * 1000),
+    creationDate: new Date(new Date().getTime() - 15 * Consts.HRS_IN_DAY * Consts.MIN_IN_HOUR * Consts.SEC_IN_MIN * Consts.MSEC_IN_SEC),
     durationMin: 0,
     description: "description",
     topRated: true
@@ -36,7 +38,7 @@ describe('OrderByPipe', () => {
   });
   
   it('items are ordered DESC if specified', () => {
-    let transformedItems = pipe.transform(items, 'creationDate', 'desc');
+    let transformedItems = pipe.transform(items, 'creationDate', Sort.desc);
     expect(transformedItems[0].id).toBe(initialItems[1].id);
     expect(transformedItems[1].id).toBe(initialItems[0].id);
     expect(transformedItems[2].id).toBe(initialItems[2].id);
