@@ -1,0 +1,24 @@
+<div class="add-course">
+    <div class="title">New course</div>
+
+    <div class="col caption">Title</div>
+    <input class="row input" [(ngModel)]="title">
+
+    <div class="col caption">Description</div>
+    <textarea name="Text1" rows="5" class="row description" [(ngModel)]="description"></textarea>
+
+    <div class="col caption">Date</div>
+    <input class="row input date" [(ngModel)]="startDate">
+
+    <div class="col caption">Duration</div>
+    <div class="row">
+        <input pattern="[0-9]*" class="input date" [(ngModel)]="duration">
+        <div class="duration">{{duration | duration}}</div>
+    </div>
+
+    <div class="col caption">Authors</div>
+    <input class="row input" [(ngModel)]="authors">
+
+    <button class="button save-button" [disabled]="isSaveDisabled()" (click)="onSaveClick()" [ngClass]="{'button-disabled':isSaveDisabled() === true}">Save</button>
+    <button class="button cancel-button" (click)="onCancelClick()">Cancel</button>
+</div>

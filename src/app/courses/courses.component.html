@@ -1,5 +1,8 @@
 <div class="parent">
-    <div class="header">
+    <div *ngIf="isAddingCourse">
+        <angular-add-course></angular-add-course>
+    </div>
+    <div class="header" *ngIf="!isAddingCourse">
         <div class="input">
             <i class="input-icon"></i>
             <input placeholder="Text to search" class="input-search" [(ngModel)]="searchStr">
@@ -9,14 +12,14 @@
             <button class="add-button" (click)="addCourse()">Add course</button>
         </div>
     </div>
-    <div>
+    <div *ngIf="!isAddingCourse">
         <angular-no-items *ngIf="visibleItems.length == 0"></angular-no-items>
     </div>
-    <div>
+    <div *ngIf="!isAddingCourse">
         <angular-course-item (onDeleteCourse)="onDeleteCourse($event)" *ngFor="let item of visibleItems | orderBy:'creationDate':'desc'" [item]="item">
         </angular-course-item>
     </div>
-    <div>
+    <div *ngIf="!isAddingCourse">
         <angular-load-more *ngIf="visibleItems.length > 0"></angular-load-more>
     </div>
 </div>

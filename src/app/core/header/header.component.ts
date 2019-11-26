@@ -9,13 +9,12 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
 
-  private isAuth = false;
-  private userName = '';
-  _subscription: Subscription;
+  isAuth = false;
+  userName = '';
 
   constructor(private authService: AuthorizationService) {
     this.isAuth = this.authService.IsAuthentificated();
-    this._subscription = authService.checkAuth.subscribe(value => { 
+    authService.checkAuth.subscribe(value => { 
       this.isAuth = value.isAuthentificated; 
       this.userName = value.userName;
     });

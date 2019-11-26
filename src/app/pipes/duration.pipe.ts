@@ -5,7 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DurationPipe implements PipeTransform {
 
-  transform(duration: number): any {
+  transform(duration: number): string {
+    console.log(duration);
+    if ((duration == undefined) || (duration == NaN)) {
+      return null;
+    }
     if (duration < 60) {
       return duration + ' min';
     }

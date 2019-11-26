@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Course, ICourse } from '../courses/course-item/course-item.component';
+import { Subject } from 'rxjs';
+
+export interface IAddCourseMessage {
+  isAddingCourse: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
-
   constructor() { }
 
-  private static mockCourses: Course[] =
+  public checkAddCourse = new Subject<IAddCourseMessage>();
+  private isAddingCourse = false;
+
+  private mockCourses: Course[] =
     [
       {
         id: 1,
@@ -51,27 +58,55 @@ export class CourseService {
         topRated: false
       }
     ];
-  
+
 
   public findAll(): ICourse[] {
-    return CourseService.mockCourses;
+    return this.mockCourses;
+  }
+
+  public IsAddingCourse(): boolean {
+    return this.isAddingCourse;
   }
 
   public createCourse(): ICourse[] {
     console.log('AddCourse clicked');
-    return CourseService.mockCourses;
+    this.isAddingCourse = true;
+    this.checkAddCourse.next({
+      isAddingCourse: this.IsAddingCourse(),
+    });
+
+    return this.mockCourses;
   }
 
   public deleteCourse(id: number): ICourse[] {
-    CourseService.mockCourses = CourseService.mockCourses.filter((course: ICourse) => course.id !== id);
-    return CourseService.mockCourses;
+    this.mockCourses = this.mockCourses.filter((course: ICourse) => course.id !== id);
+    return this.mockCourses;
   }
 
   public getCourse(id: number): ICourse {
-    return CourseService.mockCourses.find((course: ICourse) => course.id == id);
+    return this.mockCourses.find((course: ICourse) => course.id == id);
   }
 
   public updateCourse(id: number) {
     console.log('Updating course ' + id);
+  }
+
+  public getMaxId(): number {
+    return this.mockCourses.map(course => course.id).reduce((a, b)=>Math.max(a, b));
+  }
+
+  public saveCourse(course: ICourse) {
+    this.mockCourses.push(course);
+    this.isAddingCourse = false;    
+    this.checkAddCourse.next({
+      isAddingCourse: this.IsAddingCourse(),
+    });
+  }
+
+  public cancelSaving() {
+    this.isAddingCourse = false;
+    this.checkAddCourse.next({
+      isAddingCourse: this.IsAddingCourse(),
+    });
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { ICourse } from './course-item/course-item.component';
 import { FindPipe } from '../pipes/find.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'angular-courses',
@@ -10,12 +11,18 @@ import { FindPipe } from '../pipes/find.pipe';
 })
 export class CoursesComponent implements OnInit {
 
-  public items: ICourse[];
-  public visibleItems: ICourse[];
+  items: ICourse[];
+  visibleItems: ICourse[];
+  isAddingCourse = false;
 
   public searchStr = '';
 
+  
   constructor(private cs: CourseService, private find: FindPipe) {
+    this.isAddingCourse = this.cs.IsAddingCourse();
+    cs.checkAddCourse.subscribe(value => { 
+      this.isAddingCourse = value.isAddingCourse; 
+    });
   }
 
   ngOnInit() {

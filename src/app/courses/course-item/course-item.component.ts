@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 export class Course implements ICourse {
   id: number;
@@ -21,7 +21,8 @@ export interface ICourse {
 @Component({
   selector: 'angular-course-item',
   templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.scss']
+  styleUrls: ['./course-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseItemComponent implements OnInit {
 

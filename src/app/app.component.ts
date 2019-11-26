@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent {
 
-  private isAuth = false;
+  public isAuth = false;
   _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
