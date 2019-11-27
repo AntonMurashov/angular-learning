@@ -10,7 +10,10 @@
         </div>
     </div>
     <div>
-        <angular-course-item (onDeleteCourse)="onDeleteCourse($event)" *ngFor="let item of items" [item]="item">
+        <angular-no-items *ngIf="visibleItems.length == 0"></angular-no-items>
+    </div>
+    <div>
+        <angular-course-item (onDeleteCourse)="onDeleteCourse($event)" *ngFor="let item of visibleItems | orderBy:'creationDate':'desc'" [item]="item">
         </angular-course-item>
     </div>
     <div>

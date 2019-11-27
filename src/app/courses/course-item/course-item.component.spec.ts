@@ -3,6 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseItemComponent, ICourse } from './course-item.component';
 import { SimpleChange, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { DurationPipe } from '../../pipes/duration.pipe';
+import { CheckDateDirective } from '../../directives/check-date.directive';
 
 @Component({
   template: `<angular-course-item (onDeleteCourse)="onDeleteCourse($event)" [item]="item">
@@ -19,7 +21,7 @@ class TestHostComponent {
   public itemToDelete: number;
   public onDeleteCourse(currentItem: number) {
     this.itemToDelete = currentItem;
-  } 
+  }
 }
 
 describe('TestHostComponent', () => {
@@ -29,16 +31,16 @@ describe('TestHostComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent, TestHostComponent ]
+      declarations: [CourseItemComponent, TestHostComponent, DurationPipe, CheckDateDirective]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
     testHost = fixture.componentInstance;
     fixture.detectChanges();
-  });  
+  });
 
   it('should emit delete item', () => {
     const itemToDelete = {
@@ -50,9 +52,9 @@ describe('TestHostComponent', () => {
     };
     const deleteButton = fixture.debugElement.query(By.css('button.button-delete'));
     deleteButton.triggerEventHandler('click', null);
- 
+
     expect(testHost.itemToDelete).toEqual(itemToDelete.id);
- });  
+  });
 })
 
 describe('CourseItemComponent', () => {
@@ -61,9 +63,9 @@ describe('CourseItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent ]
+      declarations: [CourseItemComponent, DurationPipe, CheckDateDirective]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -74,7 +76,8 @@ describe('CourseItemComponent', () => {
       title: "title",
       creationDate: new Date(),
       durationMin: 0,
-      description: "description"
+      description: "description",
+      topRated: true
     };
     fixture.detectChanges();
   });
@@ -114,12 +117,13 @@ describe('CourseItemComponent', () => {
     }
 
     component.ngOnChanges(changes);
+    fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith('OnChanges ', changes);
   });
 
   it('should show title and time', () => {
-    expect(fixture.debugElement.query(By.css('div.title')).nativeElement.innerText).toEqual(component.item.title);
+    expect(fixture.debugElement.query(By.css('div.title')).nativeElement.innerText).toEqual(component.item.title.toUpperCase());
     expect(fixture.debugElement.query(By.css('div.time')).nativeElement.innerText).toEqual(component.item.durationMin + " min");
   });
 
@@ -127,7 +131,8 @@ describe('CourseItemComponent', () => {
     spyOn(component.onDelete, 'emit');
     let button = fixture.debugElement.query(By.css('button.button-delete')).nativeElement;
     button.click();
- 
+    fixture.detectChanges();
+
     expect(component.onDelete.emit).toHaveBeenCalled();
-  });  
+  });
 });

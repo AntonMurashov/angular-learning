@@ -1,117 +1,131 @@
 .course-item {
-    margin: 10px 0 30px 0;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    background-color:white;
-    font-family: sans-serif;
-    white-space: nowrap;
-    display: flex;
-    flex-direction: row;
+  margin: 10px 0 30px 0;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  background-color: white;
+  font-family: sans-serif;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  border-color: white;
 }
 
 .button-item {
-    float: right;
+  float: right;
 }
 
 .main-info {
-    width: 100%;
+  width: 100%;
 }
 
 .row {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-items: normal;
-    padding: 10px 0;
-    &:last-child {
-        justify-content: flex-end;
-    }
+  flex: 1;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-items: normal;
+  padding: 10px 0;
+  &:last-child {
+    justify-content: flex-end;
+  }
 }
 
 .col {
-    flex: 1;
-    display: flexbox;
-    align-items: center;
-    align-content: center;
-    justify-content: flex-start;
-    margin-left: 30px;
-}    
+  flex: 1;
+  display: flexbox;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
+  margin-left: 30px;
+}
 
 .title {
-    height: 30px;
-    font-size: 24px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.25;
-    letter-spacing: normal;
-    color: #414452;
+  height: 30px;
+  font-size: 24px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: #414452;
 }
-    
+
+.star {
+  font-size: 40px;
+  color: gold;
+  margin-left: 0px;
+  margin-bottom: 10px;
+}
+
 .time {
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-style: italic;
-    font-size: 12px;
-    color: #b9bdce;
-    background: url('../../../assets/img/clock.svg') left no-repeat;
-    padding-left: 25px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-style: italic;
+  font-size: 12px;
+  color: #b9bdce;
+  background: url("../../../assets/img/clock.svg") left no-repeat;
+  padding-left: 25px;
 }
 
 .date {
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-style: italic;
-    font-size: 12px;
-    color: #b9bdce;
-    background: url('../../../assets/img/calendar-alt.svg') left no-repeat;
-    padding-left: 25px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-style: italic;
+  font-size: 12px;
+  color: #b9bdce;
+  background: url("../../../assets/img/calendar-alt.svg") left no-repeat;
+  padding-left: 25px;
 }
 
 .description {
-    font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    white-space: normal;
-    line-height: 1.71;
-    letter-spacing: normal;
-    color: #525462;
-    display: flex;
-    padding-top: 10px;
-    padding-bottom: 30px;
-    justify-content: flex-start;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  white-space: normal;
+  line-height: 1.71;
+  letter-spacing: normal;
+  color: #525462;
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  justify-content: flex-start;
 }
-    
+
 .button {
-    margin: 20px;
-    margin-left: 40px;
-    margin-top: 80px;
-    align-content: center;
-    align-items: center;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.83;
-    letter-spacing: -0.09px;    
-    width: 75px;
-    height: 24px;
-    border-radius: 3px;
-    border: none;
-    padding-left: 25px;
+  margin: 20px;
+  margin-left: 40px;
+  margin-top: 80px;
+  align-content: center;
+  align-items: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.83;
+  letter-spacing: -0.09px;
+  width: 75px;
+  height: 24px;
+  border-radius: 3px;
+  border: none;
+  padding-left: 25px;
 }
-    
+
 .button-edit {
-    background: url("../../../assets/img/pen.svg") no-repeat #30b6dd padding-box;
-    background-size: 15px;
-    background-position: 10px;
+  background: url("../../../assets/img/pen.svg") no-repeat #30b6dd padding-box;
+  background-size: 15px;
+  background-position: 10px;
 }
-    
+
 .button-delete {
-    background: url("../../../assets/img/trash-alt.svg") no-repeat #30b6dd padding-box;
-    background-size: 15px;
-    background-position: 10px;
+  background: url("../../../assets/img/trash-alt.svg") no-repeat #30b6dd padding-box;
+  background-size: 15px;
+  background-position: 10px;
+}
+
+.top-rated {
+  background-color: lightgoldenrodyellow;
+  border-color: lightgoldenrodyellow;
 }
