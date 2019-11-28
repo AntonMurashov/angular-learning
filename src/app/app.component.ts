@@ -12,12 +12,16 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
 
   private isAuth = false;
-  _subscription: Subscription;
+  private _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
     this.isAuth = this.authService.isAuthentificated();
     this._subscription = authService.checkAuth.subscribe((value) => { 
       this.isAuth = value.isAuthentificated; 
     });
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }

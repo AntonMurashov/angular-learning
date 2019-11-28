@@ -11,11 +11,12 @@ export class HeaderComponent implements OnInit {
 
   private isAuth = false;
   private userName = '';
+  private _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
     this.userName = this.authService.getUserInfo();
     this.isAuth = this.authService.isAuthentificated();
-    authService.checkAuth.subscribe(value => { 
+    this._subscription = authService.checkAuth.subscribe(value => { 
       this.isAuth = value.isAuthentificated; 
       this.userName = value.userName;
     });
@@ -24,7 +25,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  public exit() {
+  exit() {
     this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }
