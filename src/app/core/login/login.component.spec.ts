@@ -34,7 +34,7 @@ describe('LoginComponent', () => {
   });
   
   it('should call service on login', () => {
-    const spy = spyOn(authService, 'Login');
+    const spy = spyOn(authService, 'login');
     component.onLoginClick();
     
     expect(spy).toHaveBeenCalled();

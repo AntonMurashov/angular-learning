@@ -15,7 +15,7 @@ export class AppComponent {
   _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
-    this.isAuth = this.authService.IsAuthentificated();
+    this.isAuth = this.authService.isAuthentificated();
     this._subscription = authService.checkAuth.subscribe((value) => { 
       this.isAuth = value.isAuthentificated; 
     });

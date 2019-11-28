@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Consts } from '../consts/consts';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
@@ -14,33 +15,31 @@ export class AuthorizationService {
   constructor() { }
 
   public checkAuth = new Subject<IAuthMessage>();
-  private userName = '';
-  private token = '';
 
-  public IsAuthentificated(): boolean {
-    return this.token != '';
+  public isAuthentificated(): boolean {
+    return localStorage.getItem(Consts.LS_TOKEN) != null;
   }
 
-  public GetUserInfo(): string {
-    return this.userName;
+  public getUserInfo(): string {
+    return localStorage.getItem(Consts.LS_USERNAME);
   }
 
-  public Login(email: string, password: string) {
-    this.userName = 'Test User' + ' (' + email + ')';
-    this.token = 'testtoken';
+  public login(email: string, password: string) {
+    localStorage.setItem(Consts.LS_USERNAME, 'Test User' + ' (' + email + ')');
+    localStorage.setItem(Consts.LS_TOKEN,'testtoken');
     this.checkAuth.next({
-      isAuthentificated: this.IsAuthentificated(),
-      userName: this.GetUserInfo()
+      isAuthentificated: this.isAuthentificated(),
+      userName: this.getUserInfo()
     });
     console.log('Logged in successfully');
   }
 
-  public Logout() {
-    this.userName = '';
-    this.token = '';
+  public logout() {
+    localStorage.removeItem(Consts.LS_USERNAME);
+    localStorage.removeItem(Consts.LS_TOKEN);
     this.checkAuth.next({
-      isAuthentificated: this.IsAuthentificated(),
-      userName: this.GetUserInfo()
+      isAuthentificated: this.isAuthentificated(),
+      userName: this.getUserInfo()
     });
   }
 }

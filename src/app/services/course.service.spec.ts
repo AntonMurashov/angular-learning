@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CourseService } from './course.service';
+import { Course } from '../courses/course-item/course-item.component';
 
 describe('CourseService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -23,14 +24,26 @@ describe('CourseService', () => {
   it('should log on createCourse', () => {
     const spy = spyOn(console, 'log');
     const service: CourseService = TestBed.get(CourseService);
-    service.createCourse();
-    expect(spy).toHaveBeenCalledWith('AddCourse clicked');
+    let mockCourse = new Course();
+    mockCourse.id = 6;
+    mockCourse.title = 'title';
+    service.createCourse(new Course());
+    expect(spy).toHaveBeenCalledWith('Creating course');
+    service.deleteCourse(6);
   });
 
   it('should log on updateCourse', () => {
     const spy = spyOn(console, 'log');
     const service: CourseService = TestBed.get(CourseService);
-    service.updateCourse(1);
-    expect(spy).toHaveBeenCalledWith('Updating course 1');
+    let mockCourse = new Course();
+    mockCourse.id = 1;
+    mockCourse.title = 'New title';
+    service.updateCourse(1, mockCourse);
+    expect(service.getCourse(1).title).toEqual('New title');
+  });
+
+  it('should get maxId', () => {
+    const service: CourseService = TestBed.get(CourseService);
+    expect(service.getMaxId()).toEqual(5);
   });
 });
