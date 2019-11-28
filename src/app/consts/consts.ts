@@ -3,4 +3,7 @@ export class Consts {
     public static SEC_IN_MIN = 60;
     public static MIN_IN_HOUR = 60;
     public static HRS_IN_DAY = 24;
+
+    public static LS_USERNAME = 'username';
+    public static LS_TOKEN = 'token';
 }

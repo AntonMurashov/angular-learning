@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Course, ICourse } from '../courses/course-item/course-item.component';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,8 @@ export class CourseService {
 
   constructor() { }
 
-  private getMockCourses(): Course[] {
-    return [
+  private mockCourses: Course[] =
+    [
       {
         id: 1,
         title: "Video Course 1. Name 1",
@@ -51,9 +52,34 @@ export class CourseService {
         topRated: false
       }
     ];
-  }
+  
 
   public findAll(): ICourse[] {
-    return this.getMockCourses();
+    return this.mockCourses;
+  }
+
+  public createCourse(course: ICourse): ICourse[] {
+    console.log('Creating course');
+    this.mockCourses = this.mockCourses.concat([course])
+    return this.mockCourses;
+  }
+
+  public deleteCourse(id: number): ICourse[] {
+    this.mockCourses = this.mockCourses.filter((course: ICourse) => course.id !== id);
+    return this.mockCourses;
+  }
+
+  public getCourse(id: number): ICourse {
+    return this.mockCourses.find((course: ICourse) => course.id == id);
+  }
+
+  public updateCourse(id: number, course: ICourse) {
+    console.log('Updating course ' + id);
+    let courseIndex = this.mockCourses.indexOf(this.getCourse(id));
+    this.mockCourses[courseIndex] = course;
+  }
+
+  public getMaxId(): number {
+    return this.mockCourses.map(course => course.id).reduce((a, b)=>Math.max(a, b));
   }
 }

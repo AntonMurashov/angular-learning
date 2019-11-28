@@ -1,0 +1,17 @@
+<div class="login">
+    <div class="title">Login</div>
+    <div class="row">
+        <div class="col caption">E-mail</div>
+        <div class="col note">*required</div>
+    </div>
+    <input placeholder="Enter e-mail" class="row input" [(ngModel)]="email">
+    <div class="row">
+        <div class="col caption">Password</div>
+        <div class="col note">*required</div>
+    </div>
+    <input placeholder="Enter password" class="row input" [(ngModel)]="password">
+    <div class="row">
+        <div class="col forgot-password">Forgot password?</div>
+        <button class="col login-button" [disabled]="isLoginDisabled()" (click)="onLoginClick()" [ngClass]="{'button-disabled':isLoginDisabled() === true}">Login</button>
+    </div>
+</div>

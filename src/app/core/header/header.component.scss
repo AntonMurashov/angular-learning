@@ -12,12 +12,8 @@
 
 .logo {
     flex: 1;
-    flex-grow: 10;
+    flex-grow: 5;
     padding-left: 6.6%;
-}
-
-.exit {
-    font-size: 14px;
 }
 
 .profile {
@@ -30,4 +26,13 @@
     line-height: normal;
     letter-spacing: normal;
     color: white;
+}
+
+.user {
+    flex-grow: 5;
+    text-align: right;
+}
+
+.exit {
+    font-size: 14px;
 }

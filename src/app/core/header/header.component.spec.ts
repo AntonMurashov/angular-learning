@@ -2,15 +2,17 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
 import { LogoComponent } from './logo/logo.component';
-import { By } from '@angular/platform-browser';
+import { AuthorizationService } from 'src/app/services/authorization.service';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  let authService: AuthorizationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent, LogoComponent ]
+      declarations: [ HeaderComponent, LogoComponent ],
+      providers:    [ AuthorizationService ]
     })
     .compileComponents();
   }));
@@ -18,6 +20,7 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
+    authService = TestBed.get(AuthorizationService);
     fixture.detectChanges();
   });
 
@@ -25,21 +28,11 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
   
-  it('should call exit', () => {
-    let spy = spyOn(component, 'exit');
-
-    let button = fixture.debugElement.query(By.css('img.exit')).nativeElement;
-    button.click();
-
+  it('should call service on exit', () => {
+    const spy = spyOn(authService, 'logout');
+    component.exit();
+    
     expect(spy).toHaveBeenCalled();
   });
-
-  it('should log on exit', () => {
-    const spy = spyOn(console, 'log');
-
-    let button = fixture.debugElement.query(By.css('img.exit')).nativeElement;
-    button.click();
-
-    expect(spy).toHaveBeenCalledWith('Exit clicked');
-  });
+  
 });
