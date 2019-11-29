@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthorizationService } from './authorization.service';
+import { Consts } from '../consts/consts';
 
 describe('AuthorizationService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -12,24 +13,25 @@ describe('AuthorizationService', () => {
 
   it('should authentificate on login', () => {
     const service: AuthorizationService = TestBed.get(AuthorizationService);
-    service.Login('user','password');
-    expect(service.IsAuthentificated()).toEqual(true);
+    service.login('user','password');
+    expect(service.isAuthentificated()).toEqual(true);
   });
 
   it('should generate username on login', () => {
     const service: AuthorizationService = TestBed.get(AuthorizationService);
-    service.Login('user','password');
-    expect(service.GetUserInfo()).toEqual('Test User (user)');
+    service.login('user','password');
+    expect(service.getUserInfo()).toEqual('Test User (user)');
   });
 
   it('should unauthentificate on logout', () => {
     const service: AuthorizationService = TestBed.get(AuthorizationService);
-    service.Logout();
-    expect(service.IsAuthentificated()).toEqual(false);
+    service.logout();
+    expect(service.isAuthentificated()).toEqual(false);
   });
 
   it('should clear username on logout', () => {
     const service: AuthorizationService = TestBed.get(AuthorizationService);
-    service.Logout();
+    service.logout();
+    expect(localStorage.getItem(Consts.LS_USERNAME)).toEqual(null);
   });
 });

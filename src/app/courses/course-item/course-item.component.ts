@@ -28,7 +28,7 @@ export class CourseItemComponent implements OnInit {
 
   @Input()
   public item: ICourse;
-  @Output('onDeleteCourse') onDelete: EventEmitter<number> = new EventEmitter<number>();
+  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
     console.log('Constructor started');

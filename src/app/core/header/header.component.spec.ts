@@ -29,7 +29,7 @@ describe('HeaderComponent', () => {
   });
   
   it('should call service on exit', () => {
-    const spy = spyOn(authService, 'Logout');
+    const spy = spyOn(authService, 'logout');
     component.exit();
     
     expect(spy).toHaveBeenCalled();

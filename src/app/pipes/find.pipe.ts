@@ -6,7 +6,7 @@ import { ICourse } from '../courses/course-item/course-item.component';
 })
 export class FindPipe implements PipeTransform {
 
-  transform(courses: ICourse[], searchStr: string): any {
+  transform(courses: ICourse[], searchStr: string): ICourse[] {
     return courses.filter(course => course.title.includes(searchStr));
   }
 

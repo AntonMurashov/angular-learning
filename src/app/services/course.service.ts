@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Course, ICourse } from '../courses/course-item/course-item.component';
-import { Subject } from 'rxjs';
 
 export interface IAddCourseMessage {
   isAddingCourse: boolean;
@@ -11,9 +10,6 @@ export interface IAddCourseMessage {
 })
 export class CourseService {
   constructor() { }
-
-  public checkAddCourse = new Subject<IAddCourseMessage>();
-  private isAddingCourse = false;
 
   private mockCourses: Course[] =
     [
@@ -64,17 +60,9 @@ export class CourseService {
     return this.mockCourses;
   }
 
-  public IsAddingCourse(): boolean {
-    return this.isAddingCourse;
-  }
-
-  public createCourse(): ICourse[] {
-    console.log('AddCourse clicked');
-    this.isAddingCourse = true;
-    this.checkAddCourse.next({
-      isAddingCourse: this.IsAddingCourse(),
-    });
-
+  public createCourse(course: ICourse): ICourse[] {
+    console.log('Creating course');
+    this.mockCourses = this.mockCourses.concat([course])
     return this.mockCourses;
   }
 
@@ -87,26 +75,13 @@ export class CourseService {
     return this.mockCourses.find((course: ICourse) => course.id == id);
   }
 
-  public updateCourse(id: number) {
+  public updateCourse(id: number, course: ICourse) {
     console.log('Updating course ' + id);
+    let courseIndex = this.mockCourses.indexOf(this.getCourse(id));
+    this.mockCourses[courseIndex] = course;
   }
 
   public getMaxId(): number {
     return this.mockCourses.map(course => course.id).reduce((a, b)=>Math.max(a, b));
-  }
-
-  public saveCourse(course: ICourse) {
-    this.mockCourses.push(course);
-    this.isAddingCourse = false;    
-    this.checkAddCourse.next({
-      isAddingCourse: this.IsAddingCourse(),
-    });
-  }
-
-  public cancelSaving() {
-    this.isAddingCourse = false;
-    this.checkAddCourse.next({
-      isAddingCourse: this.IsAddingCourse(),
-    });
   }
 }

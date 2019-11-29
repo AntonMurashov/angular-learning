@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CourseService } from './course.service';
+import { Course } from '../courses/course-item/course-item.component';
 
 describe('CourseService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -20,39 +21,58 @@ describe('CourseService', () => {
     expect(service.getCourse(1).id).toEqual(1);
   });
 
+  it('should log on createCourse', () => {
+    const spy = spyOn(console, 'log');
+    const service: CourseService = TestBed.get(CourseService);
+    let mockCourse = new Course();
+    mockCourse.id = 6;
+    mockCourse.title = 'title';
+    service.createCourse(new Course());
+    expect(spy).toHaveBeenCalledWith('Creating course');
+  });
+
   it('should log on updateCourse', () => {
     const spy = spyOn(console, 'log');
     const service: CourseService = TestBed.get(CourseService);
-    service.updateCourse(1);
-    expect(spy).toHaveBeenCalledWith('Updating course 1');
+    let mockCourse = new Course();
+    mockCourse.id = 1;
+    mockCourse.title = 'New title';
+    service.updateCourse(1, mockCourse);
+    expect(service.getCourse(1).title).toEqual('New title');
+  });
+
+  it('should log on deleteCourse', () => {
+    const service: CourseService = TestBed.get(CourseService);
+    service.deleteCourse(5);
+    expect(service.getMaxId()).toEqual(4);
   });
 
   it('should get maxId', () => {
     const service: CourseService = TestBed.get(CourseService);
     expect(service.getMaxId()).toEqual(5);
   });
-
+/*
   it('should create course', () => {
     const service: CourseService = TestBed.get(CourseService);
-    service.createCourse();
-    expect(service.IsAddingCourse()).toEqual(true);
+    service.createCourse(new Course());
+    expect(service.isAddingCourse()).toEqual(true);
   });
 
   it('should cancel saving', () => {
     const service: CourseService = TestBed.get(CourseService);
     service.cancelSaving();
-    expect(service.IsAddingCourse()).toEqual(false);
+    expect(service.isAddingCourse()).toEqual(false);
   });
 
   it('should close creation page on saving course', () => {
     const service: CourseService = TestBed.get(CourseService);    
     service.saveCourse(service.getCourse(1));
-    expect(service.IsAddingCourse()).toEqual(false);
+    expect(service.isAddingCourse()).toEqual(false);
   });
-
-  it('should save course', () => {
+*/
+  it('should create course', () => {
     const service: CourseService = TestBed.get(CourseService);    
-    service.saveCourse(service.getCourse(1));
+    service.createCourse(service.getCourse(1));
     expect(service.findAll().length).toEqual(6);
   });
 });

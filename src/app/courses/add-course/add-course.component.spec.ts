@@ -41,8 +41,8 @@ describe('AddCourseComponent', () => {
     expect(component.isSaveDisabled()).toEqual(true);
   });
 
-  it('should call save', () => {
-    let spy = spyOn(courseService, 'saveCourse');
+  it('should call createCourse', () => {
+    let spy = spyOn(courseService, 'createCourse');
     component.title = '123';
     fixture.detectChanges();
     let button = fixture.debugElement.query(By.css('button.save-button')).nativeElement;
@@ -50,12 +50,4 @@ describe('AddCourseComponent', () => {
 
     expect(spy).toHaveBeenCalled();
   });
-
-  it('should call cancel', () => {
-    let spy = spyOn(courseService, 'cancelSaving');
-    let button = fixture.debugElement.query(By.css('button.cancel-button')).nativeElement;
-    button.click();
-
-    expect(spy).toHaveBeenCalled();
-  });  
 });

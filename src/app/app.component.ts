@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthorizationService } from './services/authorization.service';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,12 +11,16 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
 
   public isAuth = false;
-  _subscription: Subscription;
+  private _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
-    this.isAuth = this.authService.IsAuthentificated();
+    this.isAuth = this.authService.isAuthentificated();
     this._subscription = authService.checkAuth.subscribe((value) => { 
       this.isAuth = value.isAuthentificated; 
     });
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }

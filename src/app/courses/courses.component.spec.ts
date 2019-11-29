@@ -77,13 +77,11 @@ describe('CoursesComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should log on onSearchClick', () => {
-    console.log(component.visibleItems);
+  it('should perform search', () => {
     let oldVisibleItems: ICourse[] = JSON.parse(JSON.stringify(component.visibleItems));
     let button = fixture.debugElement.query(By.css('button.search-button')).nativeElement;
     component.searchStr = '2';
     button.click();
-
     expect(component.visibleItems.map(i => i.id)).toEqual(oldVisibleItems.filter(i => i.title.includes(component.searchStr)).map(i => i.id));
   });
   

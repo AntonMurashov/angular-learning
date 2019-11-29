@@ -1,6 +1,6 @@
 <div class="parent">
     <div *ngIf="isAddingCourse">
-        <angular-add-course></angular-add-course>
+        <angular-add-course (onClosePage)="onCloseAddCourse($event)"></angular-add-course>
     </div>
     <div class="header" *ngIf="!isAddingCourse">
         <div class="input">
@@ -16,7 +16,7 @@
         <angular-no-items *ngIf="visibleItems.length == 0"></angular-no-items>
     </div>
     <div *ngIf="!isAddingCourse">
-        <angular-course-item (onDeleteCourse)="onDeleteCourse($event)" *ngFor="let item of visibleItems | orderBy:'creationDate':'desc'" [item]="item">
+        <angular-course-item (onDelete)="onDeleteCourse($event)" *ngFor="let item of visibleItems | orderBy:'creationDate':sort.desc" [item]="item">
         </angular-course-item>
     </div>
     <div *ngIf="!isAddingCourse">

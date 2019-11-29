@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { CourseService } from 'src/app/services/course.service';
 })
 export class AddCourseComponent implements OnInit {
 
+  @Output() onClosePage = new EventEmitter();
+  
   title = '';
   description = ''
   startDate = new Date().toLocaleDateString('ru-RU');
@@ -25,7 +27,7 @@ export class AddCourseComponent implements OnInit {
   }
 
   public onSaveClick() {
-    this.courseService.saveCourse({
+    this.courseService.createCourse({
       id: this.courseService.getMaxId() + 1,
       title: this.title,
       description: this.description,
@@ -33,10 +35,11 @@ export class AddCourseComponent implements OnInit {
       durationMin: this.duration,
       topRated: false
     });
+    this.onClosePage.emit(this.courseService.findAll());
   }
 
   public onCancelClick() {
-    this.courseService.cancelSaving();
+    this.onClosePage.emit();
   }
 
   private parseDate(date: string): Date {
