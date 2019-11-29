@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Course, ICourse } from '../courses/course-item/course-item.component';
 
-export interface IAddCourseMessage {
-  isAddingCourse: boolean;
-}
-
 @Injectable({
   providedIn: 'root'
 })

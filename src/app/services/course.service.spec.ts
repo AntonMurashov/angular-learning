@@ -51,25 +51,7 @@ describe('CourseService', () => {
     const service: CourseService = TestBed.get(CourseService);
     expect(service.getMaxId()).toEqual(5);
   });
-/*
-  it('should create course', () => {
-    const service: CourseService = TestBed.get(CourseService);
-    service.createCourse(new Course());
-    expect(service.isAddingCourse()).toEqual(true);
-  });
 
-  it('should cancel saving', () => {
-    const service: CourseService = TestBed.get(CourseService);
-    service.cancelSaving();
-    expect(service.isAddingCourse()).toEqual(false);
-  });
-
-  it('should close creation page on saving course', () => {
-    const service: CourseService = TestBed.get(CourseService);    
-    service.saveCourse(service.getCourse(1));
-    expect(service.isAddingCourse()).toEqual(false);
-  });
-*/
   it('should create course', () => {
     const service: CourseService = TestBed.get(CourseService);    
     service.createCourse(service.getCourse(1));
