@@ -51,13 +51,11 @@ describe('CoursesComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should call service on addCourse', () => {
-    const spy = spyOn(courseService, 'createCourse');
-    
+  it('should moe to AddingCourse on addCourse', () => {
     let button = fixture.debugElement.query(By.css('button.add-button')).nativeElement;
     button.click();
 
-    expect(spy).toHaveBeenCalled();
+    expect(component.isAddingCourse).toEqual(true);
   });
 
   it('should call service on deleteCourse', () => {

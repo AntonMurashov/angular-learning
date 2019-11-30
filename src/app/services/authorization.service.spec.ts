@@ -29,9 +29,10 @@ describe('AuthorizationService', () => {
     expect(service.isAuthentificated()).toEqual(false);
   });
 
-  it('should clear username on logout', () => {
+  it('should clear username and token on logout', () => {
     const service: AuthorizationService = TestBed.get(AuthorizationService);
     service.logout();
     expect(localStorage.getItem(Consts.LS_USERNAME)).toEqual(null);
+    expect(localStorage.getItem(Consts.LS_TOKEN)).toEqual(null);
   });
 });

@@ -7,7 +7,7 @@ import { Consts } from '../consts/consts';
 export class DurationPipe implements PipeTransform {
 
   transform(duration: number): string {
-    if ((duration == undefined) || (duration == NaN)) {
+    if ((duration == undefined) || (isNaN(duration))) {
       return null;
     }
     if (duration < Consts.MIN_IN_HOUR) {
