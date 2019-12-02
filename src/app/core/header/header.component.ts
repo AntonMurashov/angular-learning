@@ -11,12 +11,12 @@ export class HeaderComponent implements OnInit {
 
   isAuth = false;
   userName = '';
-  private _subscription: Subscription;
+  private subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
     this.userName = this.authService.getUserInfo();
     this.isAuth = this.authService.isAuthentificated();
-    this._subscription = authService.checkAuth.subscribe(value => { 
+    this.subscription = authService.checkAuth.subscribe(value => { 
       this.isAuth = value.isAuthentificated; 
       this.userName = value.userName;
     });
@@ -30,6 +30,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }

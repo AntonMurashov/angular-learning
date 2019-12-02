@@ -4,22 +4,31 @@ import { AddCourseComponent } from './add-course.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DurationPipe } from 'src/app/pipes/duration.pipe';
-import { By } from '@angular/platform-browser';
 import { CourseService } from 'src/app/services/course.service';
+import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
+import { routes } from 'src/app/app-routing.module';
+import { CoursesModule } from '../courses.module';
+import { CoreModule } from 'src/app/core/core.module';
 
 describe('AddCourseComponent', () => {
   let component: AddCourseComponent;
   let fixture: ComponentFixture<AddCourseComponent>;
   let courseService: CourseService;
+  let breadcrumbService: BreadcrumbService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddCourseComponent, DurationPipe ],
       imports: [
         FormsModule,
-        CommonModule
+        CommonModule,
+        CoursesModule,
+        CoreModule,
+        RouterTestingModule.withRoutes(routes) 
       ],
-      providers: [CourseService]
+      providers: [CourseService, BreadcrumbService]
     })
     .compileComponents();
   }));
@@ -28,6 +37,7 @@ describe('AddCourseComponent', () => {
     fixture = TestBed.createComponent(AddCourseComponent);
     component = fixture.componentInstance;
     courseService = TestBed.get(CourseService);
+    breadcrumbService = TestBed.get(BreadcrumbService);
     fixture.detectChanges();
   });
 
@@ -36,18 +46,8 @@ describe('AddCourseComponent', () => {
   });
 
   it('should disable saving on empty title', () => {
-    component.title = '';
+    component.course.title = '';
     fixture.detectChanges();
     expect(component.isSaveDisabled()).toEqual(true);
-  });
-
-  it('should call createCourse', () => {
-    let spy = spyOn(courseService, 'createCourse');
-    component.title = '123';
-    fixture.detectChanges();
-    let button = fixture.debugElement.query(By.css('button.save-button')).nativeElement;
-    button.click();
-
-    expect(spy).toHaveBeenCalled();
   });
 });

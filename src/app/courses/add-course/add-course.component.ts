@@ -1,5 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ICourse, Course } from '../course-item/course-item.component';
+import { Subscription } from 'rxjs';
+import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 
 @Component({
   selector: 'angular-add-course',
@@ -8,38 +12,56 @@ import { CourseService } from 'src/app/services/course.service';
 })
 export class AddCourseComponent implements OnInit {
 
-  @Output() onClosePage = new EventEmitter();
-  
-  title = '';
-  description = ''
-  startDate = new Date().toLocaleDateString('ru-RU');
-  duration = null;
-  authors = '';
+  routeParams: {
+    id?: number;
+  } = {};
 
-  constructor(private courseService: CourseService) { }
+  course = new Course();  
+  private subscription: Subscription;
+  isCreate: boolean;
+  isNewOrEdit: boolean = true;
+  @Output() onOpenPage = new EventEmitter<ICourse>();
+
+  startDate: string;
+
+  constructor(private route: ActivatedRoute, private courseService: CourseService, private breadcrumbService: BreadcrumbService, private router: Router) { }
 
   ngOnInit() {
-
+    this.subscription = this.route.params.subscribe((routeParams) => {
+      this.isCreate = (routeParams.id == undefined);
+      if (!this.isCreate) {
+        this.course = this.courseService.getCourse(routeParams.id);
+        if (this.course != undefined) {
+          this.startDate = ((this.course.creationDate == undefined) ? new Date() : this.course.creationDate).toLocaleDateString('ru-RU');
+          this.breadcrumbService.changeMessage(this.isCreate ? "New course" : this.course.title);
+          this.isNewOrEdit = true;
+        } else {
+          this.isNewOrEdit = false;
+        }
+      }
+    });
   }
 
   public isSaveDisabled(): boolean {
-    return (this.title == '');
+    return (this.course.title == '') || (this.course.title == undefined);
   }
 
   public onSaveClick() {
-    this.courseService.createCourse({
-      id: this.courseService.getMaxId() + 1,
-      title: this.title,
-      description: this.description,
-      creationDate: this.startDate != '' ? this.parseDate(this.startDate) : new Date(),
-      durationMin: this.duration,
-      topRated: false
-    });
-    this.onClosePage.emit(this.courseService.findAll());
+    if (this.course.id == undefined) {
+      this.course.id = this.courseService.getMaxId() + 1;
+    }
+    this.course.creationDate = this.startDate != '' ? this.parseDate(this.startDate) : new Date();
+    if (this.isCreate) {
+      this.courseService.createCourse(this.course);
+    } else {
+      this.courseService.updateCourse(this.course.id, this.course);
+    }
+
+    this.router.navigate(["courses"]);
   }
 
   public onCancelClick() {
-    this.onClosePage.emit();
+    this.router.navigate(["courses"]);
   }
 
   private parseDate(date: string): Date {
@@ -49,5 +71,9 @@ export class AddCourseComponent implements OnInit {
       .concat('/')
       .concat(date.substr(6, 4))
     );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

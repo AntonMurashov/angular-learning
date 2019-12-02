@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 
 export class Course implements ICourse {
   id: number;
@@ -6,6 +7,7 @@ export class Course implements ICourse {
   creationDate: Date;
   durationMin: number;
   description: string;
+  authors?: string;
   topRated: boolean;
 }
 
@@ -15,6 +17,7 @@ export interface ICourse {
   creationDate: Date;
   durationMin: number;
   description: string;
+  authors?: string;
   topRated: boolean;
 }
 
@@ -28,18 +31,13 @@ export class CourseItemComponent implements OnInit {
 
   @Input()
   public item: ICourse;
-  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
+  @Output() onEdit = new EventEmitter<ICourse>();
+  @Output() onDelete = new EventEmitter<number>();
 
-  constructor() {
-    console.log('Constructor started');
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
-    console.log('ngOnInit called');
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    console.log('OnChanges ', changes);
   }
 
   public delete(): void {
@@ -49,6 +47,6 @@ export class CourseItemComponent implements OnInit {
   }
 
   public edit(): void {
-    console.log('Edit on course ' + this.item.id + ' clicked');
+    this.router.navigate(["courses", this.item.id]);
   }
 }

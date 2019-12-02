@@ -1,9 +1,8 @@
 <div class="wrapper">
   <angular-header></angular-header>
-  <angular-breadcrumb *ngIf="isAuth"></angular-breadcrumb>
+  <angular-breadcrumb *ngIf="isAuth" [title]></angular-breadcrumb>
   <div class="content">
-    <angular-courses *ngIf="isAuth"></angular-courses>
-    <angular-login *ngIf="!isAuth"></angular-login>
+    <router-outlet></router-outlet>
   </div>
   <angular-footer></angular-footer>
 </div>

@@ -52,11 +52,11 @@ export class CourseService {
     ];
 
 
-  public findAll(): ICourse[] {
-    return this.mockCourses;
-  }
-
-  public createCourse(course: ICourse): ICourse[] {
+    public findAll(): ICourse[] {
+      return this.mockCourses;
+    }
+  
+    public createCourse(course: ICourse): ICourse[] {
     console.log('Creating course');
     this.mockCourses = this.mockCourses.concat([course])
     return this.mockCourses;

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 
 @Component({
   selector: 'angular-breadcrumb',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  constructor() { }
+  title: string;
 
-  ngOnInit() {
+  constructor(private breadcrumbService: BreadcrumbService, private cdr: ChangeDetectorRef) { 
   }
 
+  ngOnInit() {
+    this.breadcrumbService.title.subscribe(title => {
+      if (title != "") {
+        this.title = ' / ' + title;
+      } else {
+        this.title = "";
+      }
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngOnChanges() {
+  }
 }

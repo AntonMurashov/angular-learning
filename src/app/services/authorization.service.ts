@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Consts } from '../consts/consts';
+import { Router } from '@angular/router';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
@@ -12,7 +13,7 @@ export interface IAuthMessage {
 })
 export class AuthorizationService {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   public checkAuth = new Subject<IAuthMessage>();
 
@@ -31,6 +32,7 @@ export class AuthorizationService {
       isAuthentificated: this.isAuthentificated(),
       userName: this.getUserInfo()
     });
+    this.router.navigate(["courses"]);
     console.log('Logged in successfully');
   }
 
@@ -41,5 +43,6 @@ export class AuthorizationService {
       isAuthentificated: this.isAuthentificated(),
       userName: this.getUserInfo()
     });
+    this.router.navigate(["login"]);
   }
 }
