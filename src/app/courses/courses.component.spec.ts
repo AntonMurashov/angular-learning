@@ -12,6 +12,7 @@ import { CheckDateDirective } from '../directives/check-date.directive';
 import { DurationPipe } from '../pipes/duration.pipe';
 import { FindPipe } from '../pipes/find.pipe';
 import { CourseService } from '../services/course.service';
+import { AddCourseComponent } from './add-course/add-course.component';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
@@ -20,7 +21,7 @@ describe('CoursesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursesComponent, LoadMoreComponent, CourseItemComponent, NoItemsComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe ],
+      declarations: [ CoursesComponent, LoadMoreComponent, CourseItemComponent, NoItemsComponent, AddCourseComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe ],
       imports: [
         FormsModule,
         CommonModule
@@ -50,11 +51,17 @@ describe('CoursesComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should call service on addCourse', () => {
-    const spy = spyOn(courseService, 'createCourse');
-    
+  it('should moe to AddingCourse on addCourse', () => {
     let button = fixture.debugElement.query(By.css('button.add-button')).nativeElement;
     button.click();
+
+    expect(component.isAddingCourse).toEqual(true);
+  });
+
+  it('should call service on deleteCourse', () => {
+    const spy = spyOn(courseService, 'deleteCourse');
+    
+    component.onDeleteCourse(1);
 
     expect(spy).toHaveBeenCalled();
   });

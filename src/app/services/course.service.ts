@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Course, ICourse } from '../courses/course-item/course-item.component';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
-
   constructor() { }
 
   private mockCourses: Course[] =
@@ -52,7 +50,7 @@ export class CourseService {
         topRated: false
       }
     ];
-  
+
 
   public findAll(): ICourse[] {
     return this.mockCourses;

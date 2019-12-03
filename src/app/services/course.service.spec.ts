@@ -29,7 +29,6 @@ describe('CourseService', () => {
     mockCourse.title = 'title';
     service.createCourse(new Course());
     expect(spy).toHaveBeenCalledWith('Creating course');
-    service.deleteCourse(6);
   });
 
   it('should log on updateCourse', () => {
@@ -42,8 +41,20 @@ describe('CourseService', () => {
     expect(service.getCourse(1).title).toEqual('New title');
   });
 
+  it('should log on deleteCourse', () => {
+    const service: CourseService = TestBed.get(CourseService);
+    service.deleteCourse(5);
+    expect(service.getMaxId()).toEqual(4);
+  });
+
   it('should get maxId', () => {
     const service: CourseService = TestBed.get(CourseService);
     expect(service.getMaxId()).toEqual(5);
+  });
+
+  it('should create course', () => {
+    const service: CourseService = TestBed.get(CourseService);    
+    service.createCourse(service.getCourse(1));
+    expect(service.findAll().length).toEqual(6);
   });
 });

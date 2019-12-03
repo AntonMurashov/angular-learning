@@ -9,11 +9,12 @@ import { NoItemsComponent } from './no-items/no-items.component';
 import { DurationPipe } from '../pipes/duration.pipe';
 import { OrderByPipe } from '../pipes/order-by.pipe';
 import { FindPipe } from '../pipes/find.pipe';
+import { AddCourseComponent } from './add-course/add-course.component';
 
 
 
 @NgModule({
-  declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe, NoItemsComponent],
+  declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe, NoItemsComponent, AddCourseComponent],
   exports: [CoursesComponent, CourseItemComponent, LoadMoreComponent],
   imports: [
     FormsModule,

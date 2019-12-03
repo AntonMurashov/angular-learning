@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { ICourse, Course } from './course-item/course-item.component';
 import { FindPipe } from '../pipes/find.pipe';
+import { Sort } from '../enums/sort.enum';
 
 @Component({
   selector: 'angular-courses',
@@ -10,11 +11,15 @@ import { FindPipe } from '../pipes/find.pipe';
 })
 export class CoursesComponent implements OnInit {
 
-  public items: ICourse[];
-  public visibleItems: ICourse[];
+  @Input() isAddingCourse = false;
 
+  items: ICourse[];
+  visibleItems: ICourse[];
+  sort = Sort;
+  
   public searchStr = '';
 
+  
   constructor(private cs: CourseService, private find: FindPipe) {
   }
 
@@ -37,12 +42,19 @@ export class CoursesComponent implements OnInit {
   }
 
   public addCourse() {
-    this.items = this.cs.createCourse(this.getMockCourse());
-    this.visibleItems = this.items;
+    this.isAddingCourse = true;
   }
 
   public onDeleteCourse(id: number): void {
     this.items = this.cs.deleteCourse(id);
     this.visibleItems = this.items;
+  }
+
+  public onCloseAddCourse(items: ICourse[]) {
+    if (items != undefined) {
+      this.items = items;
+      this.visibleItems = this.items;
+    }
+    this.isAddingCourse = false;
   }
 }

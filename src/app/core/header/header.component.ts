@@ -9,8 +9,8 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
 
-  private isAuth = false;
-  private userName = '';
+  isAuth = false;
+  userName = '';
   private _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {

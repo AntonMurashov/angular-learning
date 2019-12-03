@@ -34,5 +34,4 @@ describe('HeaderComponent', () => {
     
     expect(spy).toHaveBeenCalled();
   });
-  
 });

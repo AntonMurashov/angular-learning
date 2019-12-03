@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthorizationService } from './services/authorization.service';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,7 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent {
 
-  private isAuth = false;
+  public isAuth = false;
   private _subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
