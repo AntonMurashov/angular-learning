@@ -20,7 +20,7 @@
     <div class="col caption">Authors</div>
     <input class="row input" [(ngModel)]="course.authors">
 
-    <button class="button save-button" [disabled]="isSaveDisabled()" (click)="onSaveClick()" [ngClass]="{'button-disabled':isSaveDisabled() === true}">Save</button>
+    <button class="button save-button" [disabled]="isSaveDisabled()" (click)="onSaveClick()" [class.button-disabled]="isSaveDisabled()">Save</button>
     <button class="button cancel-button" (click)="onCancelClick()">Cancel</button>
 </div>
 <angular-not-found *ngIf="!isNewOrEdit"></angular-not-found>

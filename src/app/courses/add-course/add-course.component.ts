@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
+import { DateService } from 'src/app/services/date.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ICourse, Course } from '../course-item/course-item.component';
 import { Subscription } from 'rxjs';
@@ -16,7 +17,7 @@ export class AddCourseComponent implements OnInit {
     id?: number;
   } = {};
 
-  course = new Course();  
+  course = new Course();
   private subscription: Subscription;
   isCreate: boolean;
   isNewOrEdit: boolean = true;
@@ -24,7 +25,12 @@ export class AddCourseComponent implements OnInit {
 
   startDate: string;
 
-  constructor(private route: ActivatedRoute, private courseService: CourseService, private breadcrumbService: BreadcrumbService, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private courseService: CourseService,
+    private dateService: DateService,
+    private breadcrumbService: BreadcrumbService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe((routeParams) => {
@@ -50,7 +56,7 @@ export class AddCourseComponent implements OnInit {
     if (this.course.id == undefined) {
       this.course.id = this.courseService.getMaxId() + 1;
     }
-    this.course.creationDate = this.startDate != '' ? this.parseDate(this.startDate) : new Date();
+    this.course.creationDate = this.startDate != '' ? this.dateService.parseDate(this.startDate) : new Date();
     if (this.isCreate) {
       this.courseService.createCourse(this.course);
     } else {
@@ -62,15 +68,6 @@ export class AddCourseComponent implements OnInit {
 
   public onCancelClick() {
     this.router.navigate(["courses"]);
-  }
-
-  private parseDate(date: string): Date {
-    return new Date(date.substr(3, 2)
-      .concat('/')
-      .concat(date.substr(0, 2))
-      .concat('/')
-      .concat(date.substr(6, 4))
-    );
   }
 
   ngOnDestroy() {

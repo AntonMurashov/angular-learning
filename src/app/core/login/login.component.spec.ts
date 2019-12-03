@@ -39,5 +39,17 @@ describe('LoginComponent', () => {
     component.onLoginClick();
     
     expect(spy).toHaveBeenCalled();
+  });  
+
+  it('should return false on loginDisabled if no credentials, true otherwise', () => {
+    const spy = spyOn(authService, 'login');
+    component.email = '';
+    component.password = '';
+    expect(component.isLoginDisabled()).toEqual(true);
+    component.email = 'email';
+    component.password = '';
+    expect(component.isLoginDisabled()).toEqual(true);
+    component.password = 'password';
+    expect(component.isLoginDisabled()).toEqual(false);
   });
 });
