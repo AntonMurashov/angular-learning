@@ -35,10 +35,10 @@ export class AddCourseComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.route.params.subscribe((routeParams) => {
       this.isCreate = (routeParams.id == undefined);
+      this.startDate = ((this.course.creationDate == undefined) ? new Date() : this.course.creationDate).toLocaleDateString('ru-RU');
       if (!this.isCreate) {
         this.course = this.courseService.getCourse(routeParams.id);
         if (this.course != undefined) {
-          this.startDate = ((this.course.creationDate == undefined) ? new Date() : this.course.creationDate).toLocaleDateString('ru-RU');
           this.breadcrumbService.changeMessage(this.isCreate ? "New course" : this.course.title);
           this.isNewOrEdit = true;
         } else {
