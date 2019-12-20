@@ -87,7 +87,7 @@ describe('CoursesComponent', () => {
     let button = fixture.debugElement.query(By.css('button.search-button')).nativeElement;
     component.searchStr = '2';
     button.click();
-    expect(component.visibleItems.map(i => i.id)).toEqual(oldVisibleItems.filter(i => i.title.includes(component.searchStr)).map(i => i.id));
+    expect(component.visibleItems.map(i => i.id)).toEqual(oldVisibleItems.filter(i => i.name.includes(component.searchStr)).map(i => i.id));
   });
   
   it('should call service on init', () => {

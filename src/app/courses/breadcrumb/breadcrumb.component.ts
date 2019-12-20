@@ -8,17 +8,17 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  title: string;
+  name: string;
 
   constructor(private breadcrumbService: BreadcrumbService, private cdr: ChangeDetectorRef) { 
   }
 
   ngOnInit() {
-    this.breadcrumbService.title.subscribe(title => {
-      if (title != "") {
-        this.title = ' / ' + title;
+    this.breadcrumbService.name.subscribe(name => {
+      if (name != "") {
+        this.name = ' / ' + name;
       } else {
-        this.title = "";
+        this.name = "";
       }
       this.cdr.detectChanges();
     });

@@ -1,25 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-
-export class Course implements ICourse {
-  id: number;
-  title: string;
-  creationDate: Date;
-  durationMin: number;
-  description: string;
-  authors?: string;
-  topRated: boolean;
-}
-
-export interface ICourse {
-  id: number;
-  title: string;
-  creationDate: Date;
-  durationMin: number;
-  description: string;
-  authors?: string;
-  topRated: boolean;
-}
+import { ICourse } from 'src/app/services/course.service';
 
 @Component({
   selector: 'angular-course-item',
@@ -41,7 +22,7 @@ export class CourseItemComponent implements OnInit {
   }
 
   public delete(): void {
-    if (confirm("Do you really want to delete course " + this.item.title + "?")) {
+    if (confirm("Do you really want to delete course " + this.item.name + "?")) {
       this.onDelete.emit(this.item.id);
     }
   }

@@ -45,8 +45,8 @@ describe('AddCourseComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should disable saving on empty title', () => {
-    component.course.title = '';
+  it('should disable saving on empty name', () => {
+    component.course.name = '';
     fixture.detectChanges();
     expect(component.isSaveDisabled()).toEqual(true);
   });

@@ -1,10 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService } from '../services/course.service';
-import { ICourse } from './course-item/course-item.component';
-import { FindPipe } from '../pipes/find.pipe';
-import { Sort } from '../enums/sort.enum';
-import { Router } from '@angular/router';
-import { BreadcrumbService } from '../services/breadcrumb.service';
 
 @Component({
   selector: 'angular-courses',

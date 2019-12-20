@@ -27,27 +27,27 @@ describe('CheckDateDirective', () => {
     component = fixture.componentInstance;
     component.items = [{
       id: 1,
-      title: "title",
-      creationDate: new Date(),
-      durationMin: 0,
+      name: "name",
+      date: new Date(),
+      length: 0,
       description: "description",
-      topRated: true
+      isTopRated: true
     },
     {
       id: 2,
-      title: "title",
-      creationDate: new Date(new Date().getTime() + 1 * 24 * 3600 * 1000),
-      durationMin: 0,
+      name: "name",
+      date: new Date(new Date().getTime() + 1 * 24 * 3600 * 1000),
+      length: 0,
       description: "description",
-      topRated: true
+      isTopRated: true
     },
     {
       id: 3,
-      title: "title",
-      creationDate: new Date(new Date().getTime() - 15 * 24 * 3600 * 1000),
-      durationMin: 0,
+      name: "name",
+      date: new Date(new Date().getTime() - 15 * 24 * 3600 * 1000),
+      length: 0,
       description: "description",
-      topRated: true
+      isTopRated: true
     }];
     fixture.detectChanges();
   

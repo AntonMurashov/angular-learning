@@ -2,8 +2,8 @@
     <div class="title" *ngIf="isCreate">New course</div>
     <div class="title" *ngIf="!isCreate">Edit course</div>
 
-    <div class="col caption">Title</div>
-    <input class="row input" [(ngModel)]="course.title">
+    <div class="col caption">Name</div>
+    <input class="row input" [(ngModel)]="course.name">
 
     <div class="col caption">Description</div>
     <textarea name="Text1" rows="5" class="row description" [(ngModel)]="course.description"></textarea>
@@ -13,8 +13,8 @@
 
     <div class="col caption">Duration</div>
     <div class="row">
-        <input pattern="[0-9]*" class="input date" [(ngModel)]="course.durationMin">
-        <div class="duration">{{course.durationMin | duration}}</div>
+        <input pattern="[0-9]*" class="input date" [(ngModel)]="course.length">
+        <div class="duration">{{course.length | duration}}</div>
     </div>
 
     <div class="col caption">Authors</div>

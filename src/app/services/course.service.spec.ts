@@ -26,7 +26,7 @@ describe('CourseService', () => {
     const service: CourseService = TestBed.get(CourseService);
     let mockCourse = new Course();
     mockCourse.id = 6;
-    mockCourse.title = 'title';
+    mockCourse.name = 'name';
     service.createCourse(new Course());
     expect(spy).toHaveBeenCalledWith('Creating course');
   });
@@ -36,9 +36,9 @@ describe('CourseService', () => {
     const service: CourseService = TestBed.get(CourseService);
     let mockCourse = new Course();
     mockCourse.id = 1;
-    mockCourse.title = 'New title';
+    mockCourse.name = 'New name';
     service.updateCourse(1, mockCourse);
-    expect(service.getCourse(1).title).toEqual('New title');
+    expect(service.getCourse(1).name).toEqual('New name');
   });
 
   it('should log on deleteCourse', () => {

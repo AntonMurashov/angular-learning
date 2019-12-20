@@ -14,8 +14,8 @@ export class HeaderComponent implements OnInit {
   private subscription: Subscription;
 
   constructor(private authService: AuthorizationService) {
-    this.userName = this.authService.getUserInfo();
-    this.isAuth = this.authService.isAuthentificated();
+/*    this.userName = this.authService.getUserInfo();
+    this.isAuth = this.authService.isAuthentificated();*/
     this.subscription = authService.checkAuth.subscribe(value => { 
       this.isAuth = value.isAuthentificated; 
       this.userName = value.userName;
