@@ -32,6 +32,10 @@ export class AddCourseComponent implements OnInit {
     private router: Router
   ) { }
 
+  private navigateToList() {
+    this.router.navigate(["courses"]);
+  }
+
   ngOnInit() {
     this.subscription = this.route.params.subscribe((routeParams) => {
       this.isCreate = (routeParams.id == undefined);
@@ -65,11 +69,11 @@ export class AddCourseComponent implements OnInit {
       this.courseService.updateCourse(this.course.id, this.course);
     }
 
-    this.router.navigate(["courses"]);
+    this.navigateToList();
   }
 
   public onCancelClick() {
-    this.router.navigate(["courses"]);
+    this.navigateToList();
   }
 
   ngOnDestroy() {

@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService } from '../services/course.service';
-import { ICourse } from './course-item/course-item.component';
-import { FindPipe } from '../pipes/find.pipe';
-import { Sort } from '../enums/sort.enum';
+import { ICourse } from '../course-item/course-item.component';
+import { Sort } from 'src/app/enums/sort.enum';
+import { CourseService } from 'src/app/services/course.service';
+import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
+import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
-import { BreadcrumbService } from '../services/breadcrumb.service';
 
 @Component({
-  selector: 'angular-courses',
-  templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss']
+  selector: 'angular-courses-list',
+  templateUrl: './courses-list.component.html',
+  styleUrls: ['./courses-list.component.scss']
 })
-export class CoursesComponent implements OnInit {
-/*
+export class CoursesListComponent implements OnInit {
   items: ICourse[];
   visibleItems: ICourse[];
   sort = Sort;
@@ -21,20 +20,20 @@ export class CoursesComponent implements OnInit {
 
   constructor(private cs: CourseService, private breadcrumbService: BreadcrumbService, private find: FindPipe, private router: Router) {
   }
-*/
+
   ngOnInit() {
-    /*this.items = this.cs.findAll();
+    this.items = this.cs.findAll();
     this.visibleItems = this.items;
-    this.breadcrumbService.changeMessage("");*/
+    this.breadcrumbService.changeMessage("");
     
   }
-/*
+
   public onSearchClick() {
     this.visibleItems = this.find.transform(this.items, this.searchStr);
   }
 
   public addCourse() {
-    this.router.navigate(["courses/new"]);
+    this.router.navigate(["./courses/new"]);
   }
 
   public onDeleteCourse(id: number): void {
@@ -47,5 +46,6 @@ export class CoursesComponent implements OnInit {
       this.items = items;
       this.visibleItems = this.items;
     }
-  }*/
+  }
+
 }

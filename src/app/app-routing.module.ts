@@ -7,38 +7,26 @@ import { LoginComponent } from './core/login/login.component';
 import { AddCourseComponent } from './courses/add-course/add-course.component';
 
 export const routes: Routes = [
-  { 
-    path: "", 
-    redirectTo: "courses", 
-    pathMatch: "full" 
+/*  {
+    path: "",
+    redirectTo: "courses",
+    pathMatch: "full"
   },
-
-  { 
-    path: 'login', 
+*/
+  {
+    path: 'login',
     component: LoginComponent
   },
 
-  { 
-    path: 'courses', 
+  {
+    path: "courses",
     canActivate: [AuthorizationGuard],
-    component: CoursesComponent 
+    canActivateChild: [AuthorizationGuard],
+    loadChildren: () => import('./courses/courses.module').then(mod => mod.CoursesModule)
   },
 
   {
-    path: 'courses/new',
-    canActivate: [AuthorizationGuard],
-    component: AddCourseComponent
-  },
-  
-  {
-    path: 'courses/:id',
-    canActivate: [AuthorizationGuard],
-    component: AddCourseComponent
-  },
-  
-  { 
-    path: '**', 
-    canActivate: [AuthorizationGuard],
+    path: '**',
     component: NotFoundComponent
   }
 ];

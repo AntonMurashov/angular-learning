@@ -11,18 +11,19 @@ import { DurationPipe } from '../pipes/duration.pipe';
 import { OrderByPipe } from '../pipes/order-by.pipe';
 import { FindPipe } from '../pipes/find.pipe';
 import { AddCourseComponent } from './add-course/add-course.component';
-import { AppRoutingModule } from '../app-routing.module';
 import { CoreModule } from '../core/core.module';
+import { CoursesRoutingModule } from './courses-routing.module';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { CoursesListComponent } from './courses-list/courses-list.component';
 
 @NgModule({
-  declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe, NoItemsComponent, AddCourseComponent],
-  exports: [CoursesComponent, CourseItemComponent, LoadMoreComponent],
+  declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe, NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent],
+  exports: [CoursesComponent, CourseItemComponent, LoadMoreComponent, BreadcrumbComponent],
   imports: [
     FormsModule,
     CommonModule,
     CoreModule,
-    AppRoutingModule,
-    BrowserModule
+    CoursesRoutingModule
   ],
   providers: [FindPipe]
 })

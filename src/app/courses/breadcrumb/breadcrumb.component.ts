@@ -23,7 +23,4 @@ export class BreadcrumbComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
-
-  ngOnChanges() {
-  }
 }
