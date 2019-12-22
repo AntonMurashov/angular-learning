@@ -5,7 +5,6 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'angular-courses-list',
@@ -34,19 +33,8 @@ export class CoursesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    //  this.items = this.cs.findAll();
-    console.log(this.items);
-    //    this.items$ = this.cs.getCourses(0,this.countInc);
     this.refreshItems(this.countInc);
-/*    this.cs.getCourses(0, this.countInc).subscribe(
-      v => {
-        this.items = v;
-        this.visibleItems = this.items;
-//        this.visibleItems$ = this.items$;
-      });*/
       this.breadcrumbService.changeMessage("");
-      //    this.items$.subscribe((value) => console.log(value));
-
   }
 
   public onSearchClick() {

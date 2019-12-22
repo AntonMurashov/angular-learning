@@ -44,13 +44,8 @@ export class CourseService {
   }
 
   public createCourse(course: ICourse): Observable<ICourse> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
     console.log('Creating course, ' + JSON.stringify(course));
-    return this.http.post<ICourse>(`http://localhost:3004/courses`, JSON.stringify(course), httpOptions);
+    return this.http.post<ICourse>(`http://localhost:3004/courses`, course/*, httpOptions*/);
   }
 
   public deleteCourse(id: number): Observable<Object> {
@@ -64,13 +59,8 @@ export class CourseService {
   }
 
   public updateCourse(id: number, course: ICourse): Observable<ICourse> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
     console.log('Updating course ' + id + ", " + JSON.stringify(course));
-    return this.http.patch<ICourse>(`http://localhost:3004/courses/${id}`, JSON.stringify(course), httpOptions);
+    return this.http.patch<ICourse>(`http://localhost:3004/courses/${id}`, course/*, httpOptions*/);
   }
 
   public getMaxId(): Observable<number> {
