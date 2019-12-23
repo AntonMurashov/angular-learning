@@ -36,6 +36,7 @@ export class CourseService {
   constructor(private http: HttpClient) { }
 
   public findAll(): Observable<ICourse[]> {
+    console.log('getting all courses');
     return this.http.get<ICourse[]>(`http://localhost:3004/courses`);
   }
 

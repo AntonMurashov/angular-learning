@@ -5,6 +5,10 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { loadCourses1 } from 'src/app/store/courses.actions';
+import { CoursesState } from 'src/app/store/courses.state';
+import { reducers } from 'src/app/store';
 
 @Component({
   selector: 'angular-courses-list',
@@ -13,28 +17,46 @@ import { Observable } from 'rxjs';
 })
 export class CoursesListComponent implements OnInit {
   items: ICourse[];
-  items$: Observable<ICourse[]>;
+  //  items$: Observable<ICourse[]>;
   visibleItems: ICourse[];
   visibleItems$: Observable<ICourse[]>;
   sort = Sort;
   countInc = 10;
 
+  items$: Observable<ICourse[]> = this.store.select(state => 
+    {
+      console.log(this.store);
+      console.log(state);
+      console.log('selecting from store: ' + reducers);
+      return state.courses;
+    });
+
   public searchStr = '';
 
-  constructor(private cs: CourseService, private breadcrumbService: BreadcrumbService, private find: FindPipe, private router: Router) {
-  }
+  constructor(
+    private cs: CourseService,
+    private store: Store<CoursesState>,
+    private breadcrumbService: BreadcrumbService,
+    private find: FindPipe,
+    private router: Router
+  ) { }
 
   private refreshItems(count: number) {
-    this.cs.getCourses(0, count).subscribe(
+    this.items$.subscribe(
       v => {
+        console.log(v);
         this.items = v;
         this.visibleItems = this.items;
       });
   }
 
   ngOnInit() {
+    console.log('ngOnInit');
+    this.store.dispatch(loadCourses1());
+    console.log('after dispatch');
     this.refreshItems(this.countInc);
-      this.breadcrumbService.changeMessage("");
+    console.log('after refresh');
+    this.breadcrumbService.changeMessage("");
   }
 
   public onSearchClick() {
