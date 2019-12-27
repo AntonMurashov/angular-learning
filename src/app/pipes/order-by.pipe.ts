@@ -11,7 +11,7 @@ export class OrderByPipe implements PipeTransform {
       if (courses == null)
         return [];
       let compareResult = (order == Sort.asc) ? 1 : -1;
-    return courses.sort((a, b) => a[column] > b[column] ? compareResult : -compareResult);
+    return courses.slice().sort((a, b) => a[column] > b[column] ? compareResult : -compareResult);
   }
 
 }

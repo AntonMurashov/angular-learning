@@ -1,35 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType, Effect } from '@ngrx/effects';
-import { CourseService, ICourse } from '../services/course.service';
+import { Actions, ofType, Effect } from '@ngrx/effects';
+import { CourseService } from '../services/course.service';
 import { catchError, mergeMap, map } from 'rxjs/operators';
-import { EMPTY, Observable } from 'rxjs';
-import { createAction } from '@ngrx/store';
-import { loadCourses1, loadCoursesSuccess } from './courses.actions';
-
-
+import { of } from 'rxjs';
+import { CoursesActions, CoursesLoadedSuccess, CoursesLoadedError } from './courses.actions';
 
 @Injectable()
 export class CoursesEffects {
 
   @Effect()
-  loadCoursesEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(loadCourses1),
-    mergeMap(() => {
-      console.log('merging map');
-      return this.courseService.findAll()
-      .pipe(
-        map(courses => { 
-          console.log(courses);
-          const action = loadCoursesSuccess({payload: courses});
-          console.log('action111');
-          console.log(action);
-          return action; 
-          return ({ type: '[Movies API] Movies Loaded Success', payload: courses });
-        }),
-        catchError(() => EMPTY)
-      )})
+  loadCoursesEffect$ = this.actions$.pipe(
+    ofType(CoursesActions.LoadCourses),
+    mergeMap(() => this.courseService.findAll().pipe(
+        map(courses => new CoursesLoadedSuccess({ courses: courses})),
+        catchError(() => of(new CoursesLoadedError()))
+      )
     )
-  );
+  )
 
   constructor(
     private actions$: Actions,

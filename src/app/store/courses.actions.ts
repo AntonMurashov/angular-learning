@@ -1,29 +1,33 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, props, Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { ICourse } from '../services/course.service';
 //import { Todo } from '@todos/models';
 
+export enum CoursesActions {
+  LoadCourses = '[Courses Page] Load Courses',
+  CoursesLoadedSuccess = '[Courses API] Courses Loaded Success',
+  CoursesLoadedError = '[Courses API] Courses Loaded Error'
+}
+/*
 export const loadCourses1 = createAction(
   '[Courses Page] Load Courses'
 );
-
+*/
 export const loadCoursesSuccess = createAction(
   '[Courses API] Courses Loaded Success', 
-  props<{payload: ICourse[]}>()
-);
-/*
-export const updateTodo = createAction(
-  '[TodoModule] UpdateTodo',
-  props<{update: Update<Todo>}>()
+  props<{payload: {courses: ICourse[]}}>()
 );
 
-export const deleteTodo = createAction(
-  '[TodoModule] DeleteTodo',
-  props<{id: number}>()
-);
+export class LoadCourses implements Action {
+  readonly type = CoursesActions.LoadCourses
+}
 
-export const loadTodos = createAction(
-  '[TodoModule] LoadTodos',
-  props<{todos: Todo[]}>()
-);
-*/
+export class CoursesLoadedSuccess implements Action {
+  readonly type = CoursesActions.CoursesLoadedSuccess
+
+  constructor(public payload: {courses: ICourse[]}) {}
+}
+
+export class CoursesLoadedError implements Action {
+  readonly type = CoursesActions.CoursesLoadedError
+}

@@ -5,10 +5,10 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { loadCourses1 } from 'src/app/store/courses.actions';
-import { CoursesState } from 'src/app/store/courses.state';
-import { reducers } from 'src/app/store';
+import { LoadCourses } from 'src/app/store/courses.actions';
+import { State } from 'src/app/store';
+import { selectCoursesList } from 'src/app/store/courses.reducer';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'angular-courses-list',
@@ -17,45 +17,34 @@ import { reducers } from 'src/app/store';
 })
 export class CoursesListComponent implements OnInit {
   items: ICourse[];
-  //  items$: Observable<ICourse[]>;
+  items$: Observable<ICourse[]>;
   visibleItems: ICourse[];
   visibleItems$: Observable<ICourse[]>;
   sort = Sort;
   countInc = 10;
 
-  items$: Observable<ICourse[]> = this.store.select(state => 
-    {
-      console.log(this.store);
-      console.log(state);
-      console.log('selecting from store: ' + reducers);
-      return state.courses;
-    });
-
   public searchStr = '';
 
   constructor(
     private cs: CourseService,
-    private store: Store<CoursesState>,
+    private store: Store<State>,
     private breadcrumbService: BreadcrumbService,
     private find: FindPipe,
     private router: Router
   ) { }
 
   private refreshItems(count: number) {
+    this.items$ = this.store.pipe(select(selectCoursesList));
     this.items$.subscribe(
       v => {
-        console.log(v);
         this.items = v;
         this.visibleItems = this.items;
       });
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
-    this.store.dispatch(loadCourses1());
-    console.log('after dispatch');
+    this.store.dispatch(new LoadCourses());
     this.refreshItems(this.countInc);
-    console.log('after refresh');
     this.breadcrumbService.changeMessage("");
   }
 

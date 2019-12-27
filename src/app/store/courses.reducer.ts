@@ -1,36 +1,29 @@
-import { createReducer, on, State, Action } from '@ngrx/store';
+import { createReducer, on, createSelector, Action } from '@ngrx/store';
 import * as CoursesActions from './courses.actions';
+import { State } from '.';
 import { CoursesState } from './courses.state';
 
-export const initialState: CoursesState = {
+const initialState: CoursesState = {
     courses: []
 };
 
-const coursesReducer = createReducer(
+export const coursesReducer = createReducer(
   initialState, 
   on(CoursesActions.loadCoursesSuccess, (state, action) => {
-    console.log('reducing');
-    console.log(action.payload);
-    console.log(state);
     return {
       ...state,
-      courses: action.payload
+      courses: action.payload.courses
     };
-//    state.courses = course
-//    return null; //coursesAdapter.loadCourses(state);
   }),
-  /*
-  on(TodoActions.addTodo, (state, {todo}) => {
-    return todosAdapter.addOne(todo, state);
-  }),
-  on(TodoActions.updateTodo, (state, {update}) => {
-    return todosAdapter.updateOne(update, state);
-  }),
-  on(TodoActions.deleteTodo, (state, {id}) => {
-    return todosAdapter.removeOne(id, state);
-  })*/
 );
 
-export function reducer(state: CoursesState | undefined, action: Action) {
+export function reducer(state: CoursesState = initialState, action: Action) {
   return coursesReducer(state, action);
 }
+
+const selectCourses = (state: State) => state.courses;
+
+export const selectCoursesList = createSelector(
+  selectCourses,
+  (state: CoursesState) => state.courses
+)
