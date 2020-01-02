@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoursesComponent } from './courses.component';
@@ -15,6 +14,7 @@ import { CoreModule } from '../core/core.module';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
+import { AuthorizationGuard } from '../services/authorization.guard';
 
 @NgModule({
   declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe, NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent],
@@ -25,6 +25,6 @@ import { CoursesListComponent } from './courses-list/courses-list.component';
     CoreModule,
     CoursesRoutingModule
   ],
-  providers: [FindPipe]
+  providers: [FindPipe, AuthorizationGuard]
 })
 export class CoursesModule { }

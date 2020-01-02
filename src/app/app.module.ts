@@ -13,6 +13,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { CoursesEffects } from './store/courses.effects';
+import { AuthEffects } from './store/auth.effects';
+import { AuthorizationGuard } from './services/authorization.guard';
 
 @NgModule({
   declarations: [
@@ -32,14 +34,15 @@ import { CoursesEffects } from './store/courses.effects';
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([CoursesEffects]),
+    EffectsModule.forRoot([AuthEffects, CoursesEffects]),
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    AuthorizationGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -5,10 +5,12 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LoadCourses } from 'src/app/store/courses.actions';
+import { loadCourses, loadMore, resetCoursesCount } from 'src/app/store/courses.actions';
 import { State } from 'src/app/store';
 import { selectCoursesList } from 'src/app/store/courses.reducer';
 import { Store, select } from '@ngrx/store';
+import { getAuthInfo } from 'src/app/store/auth.reducer';
+import { isAuthentificated, getAuthInfoAction } from 'src/app/store/auth.actions';
 
 @Component({
   selector: 'angular-courses-list',
@@ -21,7 +23,6 @@ export class CoursesListComponent implements OnInit {
   visibleItems: ICourse[];
   visibleItems$: Observable<ICourse[]>;
   sort = Sort;
-  countInc = 10;
 
   public searchStr = '';
 
@@ -33,18 +34,19 @@ export class CoursesListComponent implements OnInit {
     private router: Router
   ) { }
 
-  private refreshItems(count: number) {
+  private refreshItems() {
+    this.store.dispatch(loadCourses());
+  }
+
+  ngOnInit() {
+    this.store.dispatch(getAuthInfoAction());
     this.items$ = this.store.pipe(select(selectCoursesList));
     this.items$.subscribe(
       v => {
         this.items = v;
         this.visibleItems = this.items;
       });
-  }
-
-  ngOnInit() {
-    this.store.dispatch(new LoadCourses());
-    this.refreshItems(this.countInc);
+    this.refreshItems();
     this.breadcrumbService.changeMessage("");
   }
 
@@ -58,7 +60,8 @@ export class CoursesListComponent implements OnInit {
 
   public onDeleteCourse(id: number): void {
     this.cs.deleteCourse(id).subscribe(v => {
-      this.refreshItems(this.countInc);
+      this.store.dispatch(resetCoursesCount());      
+      this.refreshItems();
       this.visibleItems = this.items;
     });
   }
@@ -72,7 +75,8 @@ export class CoursesListComponent implements OnInit {
 
   public loadMore() {
     console.log('Trying to load more');
-    this.refreshItems(this.items.length + this.countInc);
+    this.store.dispatch(loadMore());
+    this.refreshItems();
   }
 
 }
