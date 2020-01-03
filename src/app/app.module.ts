@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthorizationGuard } from './services/authorization.guard';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
     CoursesModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthorizationGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

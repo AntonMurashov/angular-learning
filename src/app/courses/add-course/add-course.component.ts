@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ICourse, Course } from '../course-item/course-item.component';
 import { Subscription } from 'rxjs';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'angular-add-course',
@@ -37,21 +38,23 @@ export class AddCourseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscription = this.route.params.subscribe((routeParams) => {
-      this.isCreate = (routeParams.id == undefined);
-      if (!this.isCreate) {
-        this.course = this.courseService.getCourse(routeParams.id);
-        this.startDate = this.dateService.formatDate(this.course.creationDate);
-        if (this.course != undefined) {
-          this.breadcrumbService.changeMessage(this.isCreate ? "New course" : this.course.title);
-          this.isNewOrEdit = true;
+    this.subscription = this.route.params.pipe(
+      map((routeParams) => {
+        this.isCreate = (routeParams.id == undefined);
+        if (!this.isCreate) {
+          this.course = this.courseService.getCourse(routeParams.id);
+          if (this.course != undefined) {
+            this.startDate = this.dateService.formatDate(this.course.creationDate);
+            this.breadcrumbService.changeMessage(this.course.title);
+            this.isNewOrEdit = true;
+          } else {
+            this.isNewOrEdit = false;
+          }
         } else {
-          this.isNewOrEdit = false;
+          this.breadcrumbService.changeMessage("New course");
+          this.startDate = this.dateService.formatDate(new Date());
         }
-      } else {
-        this.startDate = this.dateService.formatDate(new Date());
-      }
-    });
+      })).subscribe();
   }
 
   public isSaveDisabled(): boolean {
