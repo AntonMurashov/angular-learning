@@ -9,13 +9,13 @@
     </div>
 </div>
 <div>
-    <angular-no-items *ngIf="visibleItems?.length == 0"></angular-no-items>
+    <angular-no-items *ngIf="items?.length == 0"></angular-no-items>
 </div>
 <div>
     <angular-course-item (onDelete)="onDeleteCourse($event)"
-        *ngFor="let item of visibleItems | orderBy:'date':sort.desc" [item]="item">
+        *ngFor="let item of items | orderBy:'date':sort.desc" [item]="item">
     </angular-course-item>
 </div>
 <div>
-    <angular-load-more *ngIf="visibleItems?.length > 0" (onLoadMore)="loadMore()"></angular-load-more>
+    <angular-load-more *ngIf="items?.length > 0" (onLoadMore)="loadMore()"></angular-load-more>
 </div>

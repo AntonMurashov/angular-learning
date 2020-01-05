@@ -39,8 +39,8 @@ export class CourseService {
     return this.http.get<ICourse[]>(`http://localhost:3004/courses`);
   }
 
-  public getCourses(from: number = 0, count: number = 10): Observable<ICourse[]> {
-    return this.http.get<ICourse[]>(`http://localhost:3004/courses?start=${from}&count=${count}`);
+  public getCourses(from: number = 0, count: number = 10, searchStr: string = null): Observable<ICourse[]> {
+    return this.http.get<ICourse[]>(`http://localhost:3004/courses?start=${from}&count=${count}&sort=date&textFragment=${searchStr}`);
   }
 
   public createCourse(course: ICourse): Observable<ICourse> {
