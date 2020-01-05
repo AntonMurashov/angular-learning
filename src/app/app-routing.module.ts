@@ -7,12 +7,12 @@ import { LoginComponent } from './core/login/login.component';
 import { AddCourseComponent } from './courses/add-course/add-course.component';
 
 export const routes: Routes = [
-/*  {
+  {
     path: "",
     redirectTo: "courses",
     pathMatch: "full"
   },
-*/
+
   {
     path: 'login',
     component: LoginComponent
@@ -20,8 +20,6 @@ export const routes: Routes = [
 
   {
     path: "courses",
-    canActivate: [AuthorizationGuard],
-    canActivateChild: [AuthorizationGuard],
     loadChildren: () => import('./courses/courses.module').then(mod => mod.CoursesModule)
   },
 
