@@ -19,7 +19,7 @@ export class AuthorizationGuard implements CanActivate, CanActivateChild {
       select(getAuthInfo),
       map(v => {
         if (v.isAuth) {
-          return true;
+          return true;//this.authService.checkAuth;
         }
         return this.router.parseUrl("/login");
       }));

@@ -8,6 +8,7 @@ import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Store } from '@ngrx/store';
 import { State } from '../store';
 import { authentificate, logout, isAuthentificated } from '../store/auth.actions';
+import { LoadingBlockService } from './loading-block.service';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
@@ -33,14 +34,15 @@ export class AuthorizationService {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private loadingBlockService: LoadingBlockService,
     private store: Store<State>
   ) {
     this.store.dispatch(isAuthentificated());
   }
 
-  public checkAuth = new Subject<IAuthMessage>();
-  public checkAuth$: Observable<IAuthMessage>;
-
+  public checkAuth = new Subject<boolean>();
+  public getUsername = this.getUserInfo().pipe(map(v => v.name.first + ' ' + v.name.last));
+  
   public isAuthentificated(): boolean {
     return this.getToken() != null;
   }
@@ -54,7 +56,8 @@ export class AuthorizationService {
   }
 
   public getUserInfo(): Observable<IUserInfo> {
-    return this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {});
+    return this.loadingBlockService.callWithLoadBlock(() =>
+      this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {}));
   }
   /*
     public login(login: string, password: string) {
@@ -74,10 +77,11 @@ export class AuthorizationService {
   */
   public login$(login: string, password: string): Observable<IAuthMessage> {
     console.log('logging$ in');
-    return this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
+    return this.loadingBlockService.callWithLoadBlock<ILoginResult>(() =>
+    this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
       "login": login,
       "password": password
-    }).pipe(map(
+    })).pipe(map(
       v => {
         console.log(v.token);
         this.setToken(v.token);
@@ -130,5 +134,9 @@ export class AuthorizationService {
           }
         })
       ) : of({ isAuthentificated: false, userName: null });
+  }
+
+  public refreshAuthInfo() {
+    this.checkAuth.next(this.isAuthentificated());
   }
 }

@@ -4,7 +4,8 @@ import { CourseService, ICourse } from 'src/app/services/course.service';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, tap, filter, map, debounceTime } from 'rxjs/operators';
 import { loadCourses, loadMore, resetCoursesCount } from 'src/app/store/courses.actions';
 import { State } from 'src/app/store';
 import { selectCoursesList } from 'src/app/store/courses.reducer';
@@ -18,10 +19,8 @@ import { isAuthentificated, getAuthInfoAction } from 'src/app/store/auth.actions
   styleUrls: ['./courses-list.component.scss']
 })
 export class CoursesListComponent implements OnInit {
-  items: ICourse[];
-  items$: Observable<ICourse[]>;
-  visibleItems: ICourse[];
-  visibleItems$: Observable<ICourse[]>;
+  public items$: Observable<ICourse[]>;
+  countInc = 10;
   sort = Sort;
 
   public searchStr = '';
@@ -35,23 +34,34 @@ export class CoursesListComponent implements OnInit {
   ) { }
 
   private refreshItems() {
+    this.searchStr$.next(this.searchStr);
     this.store.dispatch(loadCourses());
   }
 
-  ngOnInit() {
-    this.store.dispatch(getAuthInfoAction());
-    this.items$ = this.store.pipe(select(selectCoursesList));
-    this.items$.subscribe(
-      v => {
-        this.items = v;
-        this.visibleItems = this.items;
-      });
+  private count = this.countInc;
+
+  private searchStr$ = new Subject<string>();
+/*
+  private refreshItems(count: number = 0) {
+    this.searchStr$.next(this.searchStr);
     this.refreshItems();
     this.breadcrumbService.changeMessage("");
   }
+*/
+  ngOnInit() {
+    this.count = this.countInc;
+    this.store.dispatch(getAuthInfoAction());
+    this.items$ = this.store.pipe(select(selectCoursesList));
+    this.breadcrumbService.changeMessage("");
+    this.items$ = this.searchStr$.pipe(
+      debounceTime(1000),
+      map(v => v.length > 2 ? v : ''),
+      switchMap(v => this.cs.getCourses(0, this.count, v))
+    );
+  }
 
-  public onSearchClick() {
-    this.visibleItems = this.find.transform(this.items, this.searchStr);
+  ngAfterViewInit() {
+    this.refreshItems();
   }
 
   public addCourse() {
@@ -62,21 +72,16 @@ export class CoursesListComponent implements OnInit {
     this.cs.deleteCourse(id).subscribe(v => {
       this.store.dispatch(resetCoursesCount());      
       this.refreshItems();
-      this.visibleItems = this.items;
     });
   }
 
-  public onCloseAddCourse(items: ICourse[]) {
-    if (items != undefined) {
-      this.items = items;
-      this.visibleItems = this.items;
-    }
+  public loadMore() {
+//    this.count += this.countInc;
+    this.store.dispatch(loadMore());
+//    this.refreshItems();
   }
 
-  public loadMore() {
-    console.log('Trying to load more');
-    this.store.dispatch(loadMore());
+  public search() {
     this.refreshItems();
   }
-
 }

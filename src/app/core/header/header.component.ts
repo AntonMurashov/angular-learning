@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { State } from 'src/app/store';
@@ -9,38 +9,28 @@ import { getAuthInfo } from 'src/app/store/auth.reducer';
 @Component({
   selector: 'angular-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
-
-  isAuth = false;
-  userName = '';
-  private subscription: Subscription;
-  isAuth$: Observable<AuthState>;
+export class HeaderComponent {
+  isAuth$: Observable<boolean>;
+  getUsername$: Observable<string>;
 
   constructor(
     private store: Store<State>,
     ) { }
 
   ngOnInit() {
-    this.isAuth$ = this.store.pipe(select(getAuthInfo));
-    this.subscription = this.isAuth$.subscribe(
-      v => {
-        console.log(v);
-        this.isAuth = v.isAuth;
-        this.userName = v.userName;
-      }
-    )
+  /*  this.isAuth$ = this.authService.checkAuth.asObservable();
+    this.getUsername$ = this.authService.getUsername;*/
+  }
+
+  ngDoCheck() {
     this.refreshAuthInfo();
-//    this.authService.refreshAuthInfo();
   }
 
   exit() {
     this.store.dispatch(logout()); 
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
   
   private refreshAuthInfo() {

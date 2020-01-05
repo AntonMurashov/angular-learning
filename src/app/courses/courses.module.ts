@@ -15,9 +15,12 @@ import { CoursesRoutingModule } from './courses-routing.module';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { AuthorizationGuard } from '../services/authorization.guard';
+import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
 
 @NgModule({
-  declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, DurationPipe, OrderByPipe, FindPipe, NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent],
+  declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, 
+    DurationPipe, OrderByPipe, FindPipe, BreadcrumbPipe,
+    NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent],
   exports: [CoursesComponent, CourseItemComponent, LoadMoreComponent, BreadcrumbComponent],
   imports: [
     FormsModule,

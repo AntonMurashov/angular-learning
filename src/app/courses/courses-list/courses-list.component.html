@@ -1,21 +1,21 @@
 <div class="header">
     <div class="input">
         <i class="input-icon"></i>
-        <input placeholder="Text to search" class="input-search" [(ngModel)]="searchStr">
-        <button class="search-button" (click)="onSearchClick()">Search</button>
+        <input placeholder="Text to search" class="input-search" [(ngModel)]="searchStr" (ngModelChange)="search()">
     </div>
     <div>
         <button class="add-button" (click)="addCourse()">Add course</button>
     </div>
 </div>
-<div>
-    <angular-no-items *ngIf="visibleItems?.length == 0"></angular-no-items>
-</div>
-<div>
-    <angular-course-item (onDelete)="onDeleteCourse($event)"
-        *ngFor="let item of visibleItems | orderBy:'date':sort.desc" [item]="item">
-    </angular-course-item>
-</div>
-<div>
-    <angular-load-more *ngIf="visibleItems?.length > 0" (onLoadMore)="loadMore()"></angular-load-more>
-</div>
+<ng-container *ngIf="items$ | async as items">
+    <div>
+        <angular-no-items *ngIf="items?.length == 0"></angular-no-items>
+    </div>
+    <div>
+        <angular-course-item (onDelete)="onDeleteCourse($event)" *ngFor="let item of items" [item]="item">
+        </angular-course-item>
+    </div>
+    <div>
+        <angular-load-more *ngIf="items?.length > 0" (onLoadMore)="loadMore()"></angular-load-more>
+    </div>
+</ng-container>

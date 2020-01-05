@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'angular-breadcrumb',
@@ -8,19 +9,12 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  name: string;
+  title$: Observable<string>;
 
-  constructor(private breadcrumbService: BreadcrumbService, private cdr: ChangeDetectorRef) { 
+  constructor(private breadcrumbService: BreadcrumbService) { 
   }
 
   ngOnInit() {
-    this.breadcrumbService.name.subscribe(name => {
-      if (name != "") {
-        this.name = ' / ' + name;
-      } else {
-        this.name = "";
-      }
-      this.cdr.detectChanges();
-    });
+    this.title$ = this.breadcrumbService.title$;
   }
 }

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthorizationGuard } from './services/authorization.guard';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/authorization.interceptor';
 import { StoreModule } from '@ngrx/store';
@@ -14,7 +15,6 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { CoursesEffects } from './store/courses.effects';
 import { AuthEffects } from './store/auth.effects';
-import { AuthorizationGuard } from './services/authorization.guard';
 
 @NgModule({
   declarations: [
@@ -37,6 +37,7 @@ import { AuthorizationGuard } from './services/authorization.guard';
     EffectsModule.forRoot([AuthEffects, CoursesEffects]),
   ],
   providers: [
+    AuthorizationGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
