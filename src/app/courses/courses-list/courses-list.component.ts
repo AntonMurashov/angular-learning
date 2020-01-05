@@ -13,9 +13,6 @@ import { Observable } from 'rxjs';
 })
 export class CoursesListComponent implements OnInit {
   items: ICourse[];
-  items$: Observable<ICourse[]>;
-  visibleItems: ICourse[];
-  visibleItems$: Observable<ICourse[]>;
   sort = Sort;
   countInc = 10;
 
@@ -25,10 +22,9 @@ export class CoursesListComponent implements OnInit {
   }
 
   private refreshItems(count: number) {
-    this.cs.getCourses(0, count).subscribe(
+    this.cs.getCourses(0, count, this.searchStr).subscribe(
       v => {
         this.items = v;
-        this.visibleItems = this.items;
       });
   }
 
@@ -38,7 +34,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   public onSearchClick() {
-    this.visibleItems = this.find.transform(this.items, this.searchStr);
+    this.refreshItems(this.items.length);
   }
 
   public addCourse() {
@@ -47,20 +43,17 @@ export class CoursesListComponent implements OnInit {
 
   public onDeleteCourse(id: number): void {
     this.cs.deleteCourse(id).subscribe(v => {
-      this.refreshItems(this.countInc);
-      this.visibleItems = this.items;
+      this.refreshItems(this.items.length);
     });
   }
 
   public onCloseAddCourse(items: ICourse[]) {
     if (items != undefined) {
       this.items = items;
-      this.visibleItems = this.items;
     }
   }
 
   public loadMore() {
-    console.log('Trying to load more');
     this.refreshItems(this.items.length + this.countInc);
   }
 

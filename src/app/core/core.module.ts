@@ -7,6 +7,7 @@ import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, LogoComponent, UserComponent, LoginComponent, NotFoundComponent],

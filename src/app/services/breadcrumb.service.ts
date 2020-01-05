@@ -6,12 +6,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class BreadcrumbService {
 
-  private nameSource = new BehaviorSubject<string>("");
-  name = this.nameSource.asObservable();
+  title$ = new BehaviorSubject<string>("");
   
   constructor() { }
 
-  changeMessage(name: string) {
-    this.nameSource.next(name);
+  changeMessage(title: string) {
+    this.title$.next(title);
   }
 }

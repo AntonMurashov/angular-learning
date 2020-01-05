@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Subject, Observable, Subscription } from 'rxjs';
+import { Injectable, ChangeDetectorRef } from '@angular/core';
+import { Subject, Observable, of, Subscription } from 'rxjs';
 import { Consts } from '../consts/consts';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -29,7 +29,8 @@ export class AuthorizationService {
 
   constructor(private router: Router, private http: HttpClient) { }
 
-  public checkAuth = new Subject<IAuthMessage>();
+  public checkAuth = new Subject<boolean>();
+  public getUsername = this.getUserInfo().pipe(map(v => v.name.first + ' ' + v.name.last));
 
   public isAuthentificated(): boolean {
     return this.getToken() != null;
@@ -38,11 +39,11 @@ export class AuthorizationService {
   public getToken(): string {
     return localStorage.getItem(Consts.LS_TOKEN);
   }
-  
+
   public setToken(token: string) {
     localStorage.setItem(Consts.LS_TOKEN, token);
   }
-  
+
   public getUserInfo(): Observable<IUserInfo> {
     return this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {});
   }
@@ -52,33 +53,25 @@ export class AuthorizationService {
     this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
       "login": login,
       "password": password
-    }).subscribe(
-        v => {
-          console.log(v.token);
-          this.setToken(v.token);
-          this.refreshAuthInfo();
-          this.router.navigate(["courses"]);
-          console.log('Logged in successfully');
-        });
+    }).pipe(map(
+      v => {
+        console.log(v.token);
+        this.setToken(v.token);
+        this.refreshAuthInfo();
+        this.router.navigate(["courses"]);
+        console.log('Logged in successfully');
+    })).subscribe();
   }
 
   public logout() {
     localStorage.removeItem(Consts.LS_USERNAME);
     localStorage.removeItem(Consts.LS_TOKEN);
-    this.checkAuth.next({
-      isAuthentificated: null,
-      userName: null
-    });
+    this.refreshAuthInfo();
     this.router.navigate(["login"]);
   }
 
   public refreshAuthInfo() {
-    this.getUserInfo().subscribe(
-      v => {
-        this.checkAuth.next({
-          isAuthentificated: this.isAuthentificated(),
-          userName: v.name.first + ' ' + v.name.last
-        });
-    });
+    this.checkAuth.next(this.isAuthentificated());
   }
+
 }

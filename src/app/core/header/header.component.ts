@@ -1,37 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AuthorizationService, IAuthMessage } from 'src/app/services/authorization.service';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'angular-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
-
-  isAuth = false;
-  userName = '';
-  private subscription: Subscription;
+export class HeaderComponent {
+  isAuth$: Observable<boolean>;
+  getUsername$: Observable<string>;
 
   constructor(private authService: AuthorizationService) {
-/*    this.userName = this.authService.getUserInfo();
-    this.isAuth = this.authService.isAuthentificated();*/
-    this.subscription = authService.checkAuth.subscribe(value => { 
-      console.log('checking auth');
-      this.isAuth = value.isAuthentificated; 
-      this.userName = value.userName;
-    });
   }
 
   ngOnInit() {
+    this.isAuth$ = this.authService.checkAuth.asObservable();
+    this.getUsername$ = this.authService.getUsername;
+  }
+
+  ngDoCheck() {
     this.authService.refreshAuthInfo();
   }
 
   exit() {
     this.authService.logout();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }
