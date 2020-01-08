@@ -1,35 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AuthorizationService, IAuthMessage } from 'src/app/services/authorization.service';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'angular-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
-
-  isAuth = false;
-  userName = '';
-  private _subscription: Subscription;
+export class HeaderComponent {
+  isAuth$: Observable<IAuthMessage>;
 
   constructor(private authService: AuthorizationService) {
-    this.userName = this.authService.getUserInfo();
-    this.isAuth = this.authService.isAuthentificated();
-    this._subscription = authService.checkAuth.subscribe(value => { 
-      this.isAuth = value.isAuthentificated; 
-      this.userName = value.userName;
-    });
+    this.isAuth$ = authService.checkAuth;
   }
 
-  ngOnInit() {
+  ngDoCheck() {
+    this.authService.refreshAuth();
   }
 
   exit() {
     this.authService.logout();
-  }
-
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
   }
 }

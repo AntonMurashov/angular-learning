@@ -4,6 +4,7 @@ import { LoginComponent } from './login.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -15,9 +16,9 @@ describe('LoginComponent', () => {
       declarations: [ LoginComponent ],
       imports: [
         FormsModule,
-        CommonModule
-      ],
-      providers: [ AuthorizationService ]
+        CommonModule,
+        RouterTestingModule
+      ]
     })
     .compileComponents();
   }));

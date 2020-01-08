@@ -1,24 +1,26 @@
-<div class="add-course">
-    <div class="title">New course</div>
+<div class="add-course" *ngIf="isNewOrEdit">
+    <div class="title" *ngIf="isCreate">New course</div>
+    <div class="title" *ngIf="!isCreate">Edit course</div>
 
     <div class="col caption">Title</div>
-    <input class="row input" [(ngModel)]="title">
+    <input class="row input" [(ngModel)]="course.title">
 
     <div class="col caption">Description</div>
-    <textarea name="Text1" rows="5" class="row description" [(ngModel)]="description"></textarea>
+    <textarea name="Text1" rows="5" class="row description" [(ngModel)]="course.description"></textarea>
 
     <div class="col caption">Date</div>
     <input class="row input date" [(ngModel)]="startDate">
 
     <div class="col caption">Duration</div>
     <div class="row">
-        <input pattern="[0-9]*" class="input date" [(ngModel)]="duration">
-        <div class="duration">{{duration | duration}}</div>
+        <input pattern="[0-9]*" class="input date" [(ngModel)]="course.durationMin">
+        <div class="duration">{{course.durationMin | duration}}</div>
     </div>
 
     <div class="col caption">Authors</div>
-    <input class="row input" [(ngModel)]="authors">
+    <input class="row input" [(ngModel)]="course.authors">
 
     <button class="button save-button" [disabled]="isSaveDisabled()" (click)="onSaveClick()" [class.button-disabled]="isSaveDisabled()">Save</button>
     <button class="button cancel-button" (click)="onCancelClick()">Cancel</button>
 </div>
+<angular-not-found *ngIf="!isNewOrEdit"></angular-not-found>

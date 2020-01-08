@@ -15,4 +15,8 @@ export class DateService {
       .concat(date.substr(6, 4))
     );
   }
+
+  public formatDate(date: Date): string {
+    return date.toLocaleDateString('ru-RU');
+  }
 }

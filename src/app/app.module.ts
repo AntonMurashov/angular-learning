@@ -1,15 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
-import { CoursesComponent } from './courses/courses.component';
-
-const appRoutes: Routes =[
-  { path: '**', component: CoursesComponent}
-];
+import { AppRoutingModule } from './app-routing.module';
+import { AuthorizationGuard } from './services/authorization.guard';
 
 @NgModule({
   declarations: [
@@ -19,9 +15,9 @@ const appRoutes: Routes =[
     BrowserModule,
     CoreModule,
     CoursesModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthorizationGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

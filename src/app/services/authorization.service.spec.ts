@@ -2,9 +2,27 @@ import { TestBed } from '@angular/core/testing';
 
 import { AuthorizationService } from './authorization.service';
 import { Consts } from '../consts/consts';
+import { routes } from '../app-routing.module';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { CoursesModule } from '../courses/courses.module';
+import { CoreModule } from '../core/core.module';
 
 describe('AuthorizationService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({    
+      imports: [
+        FormsModule,
+        CommonModule,
+        CoursesModule,
+        CoreModule,
+        RouterTestingModule.withRoutes(routes)
+      ]
+    })
+  })
 
   it('should be created', () => {
     const service: AuthorizationService = TestBed.get(AuthorizationService);

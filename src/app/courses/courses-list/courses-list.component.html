@@ -1,0 +1,21 @@
+<div class="header">
+    <div class="input">
+        <i class="input-icon"></i>
+        <input placeholder="Text to search" class="input-search" [(ngModel)]="searchStr">
+        <button class="search-button" (click)="onSearchClick()">Search</button>
+    </div>
+    <div>
+        <button class="add-button" (click)="addCourse()">Add course</button>
+    </div>
+</div>
+<div>
+    <angular-no-items *ngIf="visibleItems.length == 0"></angular-no-items>
+</div>
+<div>
+    <angular-course-item (onDelete)="onDeleteCourse($event)"
+        *ngFor="let item of visibleItems | orderBy:'creationDate':sort.desc" [item]="item">
+    </angular-course-item>
+</div>
+<div>
+    <angular-load-more *ngIf="visibleItems.length > 0"></angular-load-more>
+</div>
