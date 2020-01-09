@@ -3,6 +3,7 @@ import { Consts } from '../consts/consts';
 import { ICourse } from '../services/course.service';
 import { DateService } from '../services/date.service';
 
+
 @Directive({
   selector: '[angularCheckDate]'
 })

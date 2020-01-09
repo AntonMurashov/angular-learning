@@ -1,78 +1,77 @@
-import { createAction, props, Action } from '@ngrx/store';
-import { IAuthMessage } from '../services/authorization.service';
+import { createAction, props } from '@ngrx/store';
 
 export enum AuthActions {
-    Authentificate = '[Auth API] Authentificate',
     Login = '[Auth API] Login',
+    LoginSuccess = '[Auth API] Login Success',
+    LoginError = '[Auth API] Login Error',
+
     Logout = '[Auth API] Logout',
+    LogoutSuccess = '[Auth API] Logout Success',
+    LogoutError = '[Auth API] Logout Error',
+
     IsAuthentificated = '[Auth API] IsAuthentificated',
-    GetAuthInfo = '[Auth API] GetAuthInfo',
-    GetToken = '[Auth API] GetToken',
-    TokenLoadedSuccess = '[Auth API] Token Loaded Success',
-    TokenLoadedError = '[Auth API] Token Loaded Error',
-    AuthLoadedSuccess = '[Auth API] Auth Loaded Success',
-    AuthLoadedError = '[Auth API] Auth Loaded Error',
-    AuthLoginSuccess = '[Auth API] Auth Login Success',
-    AuthLoginError = '[Auth API] Auth Login Error',
-    AuthLogoutSuccess = '[Auth API] Auth Logout Success',
-    AuthLogoutError = '[Auth API] Auth Logout Error'
+    IsAuthentificatedSuccess = '[Auth API] IsAuthentificated Success',
+    IsAuthentificatedError = '[Auth API] IsAuthentificated Error',
+
+    LoadToken = '[Auth API] Load Token',
+    LoadTokenSuccess = '[Auth API] Load Token Success',
+    LoadTokenError = '[Auth API] Load Token Error',
+
+    LoadUserInfo = '[Auth API] Load UserInfo',
+    LoadUserInfoSuccess = '[Auth API] Load UserInfo Success',
+    LoadUserInfoError = '[Auth API] Load UserInfo Error'
 }
 
-export const authentificate = createAction(AuthActions.Authentificate);
 export const login = createAction(AuthActions.Login,
     props<{ username: string, password: string }>()
-    );
+);
 export const logout = createAction(AuthActions.Logout);
 export const isAuthentificated = createAction(AuthActions.IsAuthentificated);
-export const getTokenAction = createAction(AuthActions.GetToken);
-export const getAuthInfoAction = createAction(AuthActions.GetAuthInfo);
+export const loadToken = createAction(AuthActions.LoadToken);
+export const loadUserInfo = createAction(AuthActions.LoadUserInfo);
 
-export const loadAuthSuccess = createAction(
-    AuthActions.AuthLoadedSuccess,
-    props<{ payload: { authMessage: IAuthMessage } }>()
+
+export const loginSuccess = createAction(AuthActions.LoginSuccess);
+
+export const loginError = createAction(
+    AuthActions.LoginError,
+    props<{ error: string }>()
+);
+
+export const logoutSuccess = createAction(AuthActions.LogoutSuccess);
+
+export const logoutError = createAction(
+    AuthActions.LogoutError,
+    props<{ error: string }>()
+);
+
+export const isAuthentificatedSuccess = createAction(
+    AuthActions.IsAuthentificatedSuccess,
+    props<{ isAuth: boolean }>()
+);
+
+export const isAuthentificatedError = createAction(
+    AuthActions.IsAuthentificatedError,
+    props<{ error: string }>()
 );
 
 export const loadTokenSuccess = createAction(
-    AuthActions.TokenLoadedSuccess,
-    props<{ payload: { token: string } }>()
+    AuthActions.LoadTokenSuccess,
+    props<{ token: string }>()
 );
 
-export class AuthLoadedSuccess implements Action {
-    readonly type = AuthActions.AuthLoadedSuccess
+export const loadTokenError = createAction(
+    AuthActions.LoadTokenError,
+    props<{ error: string }>()
+);
 
-    constructor(public payload: { authMessage: IAuthMessage }) { }
-}
+export const loadUserInfoSuccess = createAction(
+    AuthActions.LoadUserInfoSuccess,
+    props<{ userName: string }>()
+);
 
-export class TokenLoadedSuccess implements Action {
-    readonly type = AuthActions.TokenLoadedSuccess
+export const loadUserInfoError = createAction(
+    AuthActions.LoadUserInfoError,
+    props<{ error: string }>()
+);
 
-    constructor(public payload: { token: string }) { }
-}
-
-export class AuthLoginSuccess implements Action {
-    readonly type = AuthActions.AuthLoginSuccess
-
-    constructor() { }
-}
-
-export class AuthLogoutSuccess implements Action {
-    readonly type = AuthActions.AuthLogoutSuccess
-
-    constructor() { }
-}
-
-export class AuthLoadedError implements Action {
-    readonly type = AuthActions.AuthLoadedError
-}
-
-export class TokenLoadedError implements Action {
-    readonly type = AuthActions.TokenLoadedError
-}
-
-export class AuthLoginError implements Action {
-    readonly type = AuthActions.AuthLoginError
-}
-
-export class AuthLogoutError implements Action {
-    readonly type = AuthActions.AuthLogoutError
-}

@@ -1,12 +1,16 @@
-import { createAction, props, Action } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
+import { createAction, props } from '@ngrx/store';
 import { ICourse } from '../services/course.service';
-//import { Todo } from '@todos/models';
 
 export enum CoursesActions {
+
   LoadCourses = '[Courses Page] Load Courses',
-  CoursesLoadedSuccess = '[Courses API] Courses Loaded Success',
-  CoursesLoadedError = '[Courses API] Courses Loaded Error',
+  LoadCoursesSuccess = '[Courses API] Courses Loaded Success',
+  LoadCoursesError = '[Courses API] Courses Loaded Error',
+
+  DeleteCourse = '[Courses Page] Delete Course',
+  DeleteCourseSuccess = '[Courses API] Delete Course Success',
+  DeleteCourseError = '[Courses API] Delete Course Error',
+
   LoadMore = '[Courses Page] Load More',
   ResetCoursesCount = '[Courses Page] ResetCoursesCount'
 }
@@ -14,23 +18,29 @@ export enum CoursesActions {
 export const loadMore = createAction(CoursesActions.LoadMore);
 export const resetCoursesCount = createAction(CoursesActions.ResetCoursesCount);
 
-export const loadCourses = createAction(CoursesActions.LoadCourses);
+export const loadCourses = createAction(CoursesActions.LoadCourses,
+  props<{ searchStr: string }>()
+);
+
+export const deleteCourse = createAction(CoursesActions.DeleteCourse,
+  props<{ id: number }>()
+);
 
 export const loadCoursesSuccess = createAction(
-  CoursesActions.CoursesLoadedSuccess, 
-  props<{payload: {courses: ICourse[]}}>()
+  CoursesActions.LoadCoursesSuccess, 
+  props<{courses: ICourse[]}>()
 );
-/*
-export class LoadCourses implements Action {
-  readonly type = CoursesActions.LoadCourses
-}
-*/
-export class CoursesLoadedSuccess implements Action {
-  readonly type = CoursesActions.CoursesLoadedSuccess
 
-  constructor(public payload: {courses: ICourse[]}) {}
-}
+export const loadCoursesError = createAction(
+  CoursesActions.LoadCoursesError,
+  props<{ error: string }>()
+);
 
-export class CoursesLoadedError implements Action {
-  readonly type = CoursesActions.CoursesLoadedError
-}
+export const deleteCourseSuccess = createAction(
+  CoursesActions.DeleteCourseSuccess
+);
+
+export const deleteCourseError = createAction(
+  CoursesActions.DeleteCourseError,
+  props<{ error: string }>()
+);

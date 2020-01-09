@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { State } from '../store';
-import { getAuthInfo } from '../store/auth.reducer';
+import { getIsAuthentificated } from '../store/auth.reducer';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -16,10 +16,10 @@ export class AuthorizationGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.pipe(
-      select(getAuthInfo),
+      select(getIsAuthentificated),
       map(v => {
-        if (v.isAuth) {
-          return true;//this.authService.checkAuth;
+        if (v) {
+          return true;
         }
         return this.router.parseUrl("/login");
       }));

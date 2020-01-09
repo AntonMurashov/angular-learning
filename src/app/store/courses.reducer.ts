@@ -2,11 +2,10 @@ import { createReducer, on, createSelector, Action } from '@ngrx/store';
 import * as CoursesActions from './courses.actions';
 import { State } from '.';
 import { CoursesState } from './courses.state';
-
-export const COUNT_INC = 10;
+import { Consts } from './../consts/consts'
 
 const initialState: CoursesState = {
-  listCount: COUNT_INC,
+  listCount: Consts.COURSES_COUNT_INC,
   courses: []
 };
 
@@ -15,19 +14,19 @@ export const coursesReducer = createReducer(
   on(CoursesActions.loadCoursesSuccess, (state, action) => {
     return {
       ...state,
-      courses: action.payload.courses
+      courses: action.courses
     };
   }),
   on(CoursesActions.loadMore, (state) => {
     return {
       ...state,
-      listCount: state.listCount + COUNT_INC
+      listCount: state.listCount + Consts.COURSES_COUNT_INC
     };    
   }),
   on(CoursesActions.resetCoursesCount, (state) => {
     return {
       ...state,
-      listCount: COUNT_INC
+      listCount: Consts.COURSES_COUNT_INC
     };    
   })
 );
@@ -37,7 +36,6 @@ export function reducer(state: CoursesState = initialState, action: Action) {
 }
 
 const selectCourses = (state: State) => state.courses;
-
 export const selectCoursesList = createSelector(
   selectCourses,
   (state: CoursesState) => state.courses

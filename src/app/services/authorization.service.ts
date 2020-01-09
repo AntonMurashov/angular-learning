@@ -4,9 +4,6 @@ import { Consts } from '../consts/consts';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { State } from '../store';
-import { isAuthentificated } from '../store/auth.actions';
 import { LoadingBlockService } from './loading-block.service';
 import { BACKEND_PATH } from 'src/environments/environment';
 
@@ -35,18 +32,14 @@ export class AuthorizationService {
     private router: Router,
     private http: HttpClient,
     private loadingBlockService: LoadingBlockService,
-    private store: Store<State>
-  ) {
-    this.store.dispatch(isAuthentificated());
+  ) { }
+
+  private buildUserName(userInfo: IUserInfo): string {
+    return userInfo.name.first + ' ' + userInfo.name.last;
   }
 
-private buildUserName(userInfo: IUserInfo): string {
-  return userInfo.name.first + ' ' + userInfo.name.last;
-}
-
   public checkAuth = new Subject<boolean>();
-  public getUsername = this.getUserInfo().pipe(map(v => this.buildUserName(v)));
-  
+
   public isAuthentificated(): boolean {
     return this.getToken() != null;
   }
@@ -60,24 +53,22 @@ private buildUserName(userInfo: IUserInfo): string {
   }
 
   public getUserInfo(): Observable<IUserInfo> {
-    return this.loadingBlockService.callWithLoadBlock(() =>
-      this.http.post<IUserInfo>(`${BACKEND_PATH}/auth/userinfo`, {}));
+    return this.loadingBlockService.callWithLoadBlock(() => this.http.post<IUserInfo>(`${BACKEND_PATH}/auth/userinfo`, {}));
   }
 
-  public login$(login: string, password: string): Observable<IAuthMessage> {
-    console.log('logging$ in');
+  public login(login: string, password: string): Observable<IAuthMessage> {
     return this.loadingBlockService.callWithLoadBlock<ILoginResult>(() =>
-    this.http.post<ILoginResult>(`${BACKEND_PATH}/auth/login`, {
-      "login": login,
-      "password": password
-    })).pipe(map(
-      v => {
-        this.setToken(v.token);
-        this.router.navigate(["courses"]);
-        return {
-          isAuthentificated: true
-        };
-      }));
+      this.http.post<ILoginResult>(`${BACKEND_PATH}/auth/login`, {
+        "login": login,
+        "password": password
+      })).pipe(map(
+        v => {
+          this.setToken(v.token);
+          this.router.navigate(["courses"]);
+          return {
+            isAuthentificated: true
+          };
+        }));
   }
 
   public logout$(): Observable<IAuthMessage> {
