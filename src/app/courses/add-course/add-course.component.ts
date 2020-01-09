@@ -1,9 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { CourseService } from 'src/app/services/course.service';
+import { CourseService, Course, ICourse } from 'src/app/services/course.service';
 import { DateService } from 'src/app/services/date.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ICourse, Course } from '../course-item/course-item.component';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { map } from 'rxjs/operators';
 
@@ -42,37 +41,40 @@ export class AddCourseComponent implements OnInit {
       map((routeParams) => {
         this.isCreate = (routeParams.id == undefined);
         if (!this.isCreate) {
-          this.course = this.courseService.getCourse(routeParams.id);
+          this.courseService.getCourse(routeParams.id).subscribe(v => {
+          this.course = v;
           if (this.course != undefined) {
-            this.startDate = this.dateService.formatDate(this.course.creationDate);
-            this.breadcrumbService.changeMessage(this.course.title);
+            this.startDate = this.course.date;
+            this.breadcrumbService.changeMessage(this.course.name);
             this.isNewOrEdit = true;
           } else {
             this.isNewOrEdit = false;
           }
-        } else {
+        })} else {
           this.breadcrumbService.changeMessage("New course");
           this.startDate = this.dateService.formatDate(new Date());
         }
+        this.startDate = ""; //this.dateService.formatDate(new Date());
       })).subscribe();
   }
 
   public isSaveDisabled(): boolean {
-    return (this.course.title == '') || (this.course.title == undefined);
+    return (this.course.name == '') || (this.course.name == undefined);
   }
 
   public onSaveClick() {
+    let action: Observable<Object>;
     if (this.course.id == undefined) {
-      this.course.id = this.courseService.getMaxId() + 1;
+      this.courseService.getMaxId().subscribe(v => {
+        this.course.id = v + 1;
+      });
     }
-    this.course.creationDate = this.startDate != '' ? this.dateService.parseDate(this.startDate) : new Date();
-    if (this.isCreate) {
-      this.courseService.createCourse(this.course);
-    } else {
-      this.courseService.updateCourse(this.course.id, this.course);
-    }
-
-    this.navigateToList();
+    this.course.date = this.startDate != '' ? this.startDate : this.dateService.formatDate(new Date());
+    action = this.isCreate ? this.courseService.createCourse(this.course) : this.courseService.updateCourse(this.course.id, this.course);
+    action.subscribe(v => {
+      console.log('calling update');
+      this.navigateToList();
+    });    
   }
 
   public onCancelClick() {

@@ -18,9 +18,9 @@ import { CoreModule } from 'src/app/core/core.module';
 class TestHostComponent {
   public item = {
     id: 1,
-    title: "title",
-    creationDate: new Date(),
-    durationMin: 0,
+    name: "name",
+    date: new Date(),
+    length: 0,
     description: "description"
   };
   public itemToDelete: number;
@@ -69,11 +69,11 @@ describe('CourseItemComponent', () => {
     component = fixture.componentInstance;
     component.item = {
       id: 1,
-      title: "title",
-      creationDate: new Date(),
-      durationMin: 0,
+      name: "name",
+      date: new Date(),
+      length: 0,
       description: "description",
-      topRated: true
+      isTopRated: true
     };
     fixture.detectChanges();
   });
@@ -97,9 +97,9 @@ describe('CourseItemComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should show title and time', () => {
-    expect(fixture.debugElement.query(By.css('div.title')).nativeElement.innerText).toEqual(component.item.title.toUpperCase());
-    expect(fixture.debugElement.query(By.css('div.time')).nativeElement.innerText).toEqual(component.item.durationMin + " min");
+  it('should show name and time', () => {
+    expect(fixture.debugElement.query(By.css('div.title')).nativeElement.innerText).toEqual(component.item.name.toUpperCase());
+    expect(fixture.debugElement.query(By.css('div.time')).nativeElement.innerText).toEqual(component.item.length + " min");
   });
 
 // TODO: dealing with confirmation windows  

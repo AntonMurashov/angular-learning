@@ -9,14 +9,19 @@ import { Subscription, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  isAuth$: Observable<IAuthMessage>;
+  isAuth$: Observable<boolean>;
+  getUsername$: Observable<string>;
 
   constructor(private authService: AuthorizationService) {
-    this.isAuth$ = authService.checkAuth;
+  }
+
+  ngOnInit() {
+    this.isAuth$ = this.authService.checkAuth.asObservable();
+    this.getUsername$ = this.authService.getUsername;
   }
 
   ngDoCheck() {
-    this.authService.refreshAuth();
+    this.authService.refreshAuthInfo();
   }
 
   exit() {

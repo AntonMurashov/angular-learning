@@ -1,11 +1,25 @@
 import { Injectable, ChangeDetectorRef } from '@angular/core';
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of, Subscription } from 'rxjs';
 import { Consts } from '../consts/consts';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { createOfflineCompileUrlResolver } from '@angular/compiler';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
-  userName: string;
+  userName?: string;
+}
+
+interface ILoginResult {
+  token: string;
+}
+
+interface IUserInfo {
+  name: {
+    first: string,
+    last: string
+  };
 }
 
 @Injectable({
@@ -13,35 +27,51 @@ export interface IAuthMessage {
 })
 export class AuthorizationService {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
-  public refreshAuth() {
-    this.checkAuth.next({
-      isAuthentificated: this.isAuthentificated(),
-      userName: this.getUserInfo()
-    });
-  }
-
-  public checkAuth = new Subject<IAuthMessage>();
+  public checkAuth = new Subject<boolean>();
+  public getUsername = this.getUserInfo().pipe(map(v => v.name.first + ' ' + v.name.last));
 
   public isAuthentificated(): boolean {
-    return localStorage.getItem(Consts.LS_TOKEN) != null;
+    return this.getToken() != null;
   }
 
-  public getUserInfo(): string {
-    return localStorage.getItem(Consts.LS_USERNAME);
+  public getToken(): string {
+    return localStorage.getItem(Consts.LS_TOKEN);
   }
 
-  public login(email: string, password: string) {
-    localStorage.setItem(Consts.LS_USERNAME, 'Test User' + ' (' + email + ')');
-    localStorage.setItem(Consts.LS_TOKEN,'testtoken');
-    this.router.navigate(["courses"]);
-    console.log('Logged in successfully');
+  public setToken(token: string) {
+    localStorage.setItem(Consts.LS_TOKEN, token);
+  }
+
+  public getUserInfo(): Observable<IUserInfo> {
+    return this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {});
+  }
+
+  public login(login: string, password: string) {
+    console.log('logging in');
+    this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
+      "login": login,
+      "password": password
+    }).pipe(map(
+      v => {
+        console.log(v.token);
+        this.setToken(v.token);
+        this.refreshAuthInfo();
+        this.router.navigate(["courses"]);
+        console.log('Logged in successfully');
+    })).subscribe();
   }
 
   public logout() {
     localStorage.removeItem(Consts.LS_USERNAME);
     localStorage.removeItem(Consts.LS_TOKEN);
+    this.refreshAuthInfo();
     this.router.navigate(["login"]);
   }
+
+  public refreshAuthInfo() {
+    this.checkAuth.next(this.isAuthentificated());
+  }
+
 }

@@ -1,10 +1,10 @@
-<div class="course-item" [angularCheckDate]=item [ngClass]="{'top-rated':item.topRated === true}">
+<div class="course-item" [angularCheckDate]=item [ngClass]="{'top-rated':item.isTopRated === true}">
     <div class="main-info">
         <div class="row">
-            <div class="col title">{{item.title | uppercase}}</div>
-            <div class="col star" *ngIf="item.topRated">&#9733;</div>
-            <div class="col time">{{item.durationMin | duration}}</div>
-            <div class="col date">{{item.creationDate | date}}</div>
+            <div class="col title">{{item.name | uppercase}}</div>
+            <div class="col star" *ngIf="item.isTopRated">&#9733;</div>
+            <div class="col time">{{item.length | duration}}</div>
+            <div class="col date">{{item.date | date}}</div>
         </div>
         <div class="row">
             <div class="col description">{{item.description}}</div>

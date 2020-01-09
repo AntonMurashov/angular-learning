@@ -2,11 +2,10 @@
     <div class="logo">
         <angular-logo></angular-logo>
     </div>
-    <!--ng-container *ngIf="isAuth"-->
-            <ng-container *ngIf="(isAuth$ | async)?.isAuthentificated">
+    <ng-container *ngIf="isAuth$ | async">
         <div class="profile user">
             <img src="assets/img/ic-user.svg">
-            {{(isAuth$ | async)?.userName}}
+            {{getUsername$ | async}}
         </div>
         <div class="profile" (click)="exit()">
             <img class="exit" src="assets/img/ic-exit.svg">
