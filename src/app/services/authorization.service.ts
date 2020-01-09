@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
+import { LoadingBlockService } from './loading-block.service';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
@@ -27,7 +28,7 @@ interface IUserInfo {
 })
 export class AuthorizationService {
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient, private loadingBlockService: LoadingBlockService) { }
 
   public checkAuth = new Subject<boolean>();
   public getUsername = this.getUserInfo().pipe(map(v => v.name.first + ' ' + v.name.last));
@@ -45,22 +46,24 @@ export class AuthorizationService {
   }
 
   public getUserInfo(): Observable<IUserInfo> {
-    return this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {});
+    return this.loadingBlockService.callWithLoadBlock(() =>
+      this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {}));
   }
 
   public login(login: string, password: string) {
     console.log('logging in');
-    this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
-      "login": login,
-      "password": password
-    }).pipe(map(
-      v => {
-        console.log(v.token);
-        this.setToken(v.token);
-        this.refreshAuthInfo();
-        this.router.navigate(["courses"]);
-        console.log('Logged in successfully');
-    })).subscribe();
+    this.loadingBlockService.callWithLoadBlock<ILoginResult>(() =>
+      this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
+        "login": login,
+        "password": password
+      })).pipe(map(
+        v => {
+          console.log(v.token);
+          this.setToken(v.token);
+          this.refreshAuthInfo();
+          this.router.navigate(["courses"]);
+          console.log('Logged in successfully');
+        })).subscribe();
   }
 
   public logout() {
