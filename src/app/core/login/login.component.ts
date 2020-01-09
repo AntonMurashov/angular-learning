@@ -26,6 +26,5 @@ export class LoginComponent implements OnInit {
 
   public onLoginClick() {
     this.store.dispatch(login({username: this.email, password: this.password})); 
-    //this.authService.login(this.email, this.password);
   }
 }

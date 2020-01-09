@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, Subscription, of } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { Consts } from '../consts/consts';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, mergeMap } from 'rxjs/operators';
-import { createOfflineCompileUrlResolver } from '@angular/compiler';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { State } from '../store';
-import { authentificate, logout, isAuthentificated } from '../store/auth.actions';
+import { isAuthentificated } from '../store/auth.actions';
 import { LoadingBlockService } from './loading-block.service';
+import { BACKEND_PATH } from 'src/environments/environment';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
@@ -40,8 +40,12 @@ export class AuthorizationService {
     this.store.dispatch(isAuthentificated());
   }
 
+private buildUserName(userInfo: IUserInfo): string {
+  return userInfo.name.first + ' ' + userInfo.name.last;
+}
+
   public checkAuth = new Subject<boolean>();
-  public getUsername = this.getUserInfo().pipe(map(v => v.name.first + ' ' + v.name.last));
+  public getUsername = this.getUserInfo().pipe(map(v => this.buildUserName(v)));
   
   public isAuthentificated(): boolean {
     return this.getToken() != null;
@@ -57,33 +61,17 @@ export class AuthorizationService {
 
   public getUserInfo(): Observable<IUserInfo> {
     return this.loadingBlockService.callWithLoadBlock(() =>
-      this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {}));
+      this.http.post<IUserInfo>(`${BACKEND_PATH}/auth/userinfo`, {}));
   }
-  /*
-    public login(login: string, password: string) {
-      console.log('logging in');
-      this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
-        "login": login,
-        "password": password
-      }).subscribe(
-          v => {
-            console.log(v.token);
-            this.setToken(v.token);
-  //          this.refreshAuthInfo();
-            this.router.navigate(["courses"]);
-            console.log('Logged in successfully');
-          });
-    }
-  */
+
   public login$(login: string, password: string): Observable<IAuthMessage> {
     console.log('logging$ in');
     return this.loadingBlockService.callWithLoadBlock<ILoginResult>(() =>
-    this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
+    this.http.post<ILoginResult>(`${BACKEND_PATH}/auth/login`, {
       "login": login,
       "password": password
     })).pipe(map(
       v => {
-        console.log(v.token);
         this.setToken(v.token);
         this.router.navigate(["courses"]);
         return {
@@ -92,23 +80,6 @@ export class AuthorizationService {
       }));
   }
 
-  /*
-    public logout() {
-      localStorage.removeItem(Consts.LS_USERNAME);
-      localStorage.removeItem(Consts.LS_TOKEN);
-      this.router.navigate(["login"]);
-    }*/
-  /*
-    public refreshAuthInfo() {
-      this.getUserInfo().subscribe(
-        v => {
-          this.checkAuth.next({
-            isAuthentificated: this.isAuthentificated(),
-            userName: v.name.first + ' ' + v.name.last
-          });
-      });
-    }
-  */
   public logout$(): Observable<IAuthMessage> {
     localStorage.removeItem(Consts.LS_USERNAME);
     localStorage.removeItem(Consts.LS_TOKEN);
@@ -125,12 +96,13 @@ export class AuthorizationService {
   }
 
   public refreshAuthInfo$(): Observable<IAuthMessage> {
+    this.checkAuth.next(this.isAuthentificated());
     return this.isAuthentificated() ?
       this.getUserInfo().pipe(
         map((v) => {
           return {
             isAuthentificated: this.isAuthentificated(),
-            userName: v.name.first + ' ' + v.name.last
+            userName: this.buildUserName(v)
           }
         })
       ) : of({ isAuthentificated: false, userName: null });

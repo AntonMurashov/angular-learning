@@ -7,8 +7,6 @@ import { LoadMoreComponent } from './load-more/load-more.component';
 import { CheckDateDirective } from '../directives/check-date.directive';
 import { NoItemsComponent } from './no-items/no-items.component';
 import { DurationPipe } from '../pipes/duration.pipe';
-import { OrderByPipe } from '../pipes/order-by.pipe';
-import { FindPipe } from '../pipes/find.pipe';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { CoreModule } from '../core/core.module';
 import { CoursesRoutingModule } from './courses-routing.module';
@@ -19,7 +17,7 @@ import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
 
 @NgModule({
   declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, 
-    DurationPipe, OrderByPipe, FindPipe, BreadcrumbPipe,
+    DurationPipe, BreadcrumbPipe,
     NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent],
   exports: [CoursesComponent, CourseItemComponent, LoadMoreComponent, BreadcrumbComponent],
   imports: [
@@ -28,6 +26,6 @@ import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
     CoreModule,
     CoursesRoutingModule
   ],
-  providers: [FindPipe, AuthorizationGuard]
+  providers: [AuthorizationGuard]
 })
 export class CoursesModule { }

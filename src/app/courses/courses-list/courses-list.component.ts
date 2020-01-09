@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Sort } from 'src/app/enums/sort.enum';
 import { CourseService, ICourse } from 'src/app/services/course.service';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
-import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { switchMap, tap, filter, map, debounceTime } from 'rxjs/operators';
+import { switchMap, map, debounceTime } from 'rxjs/operators';
 import { loadCourses, loadMore, resetCoursesCount } from 'src/app/store/courses.actions';
 import { State } from 'src/app/store';
 import { selectCoursesList } from 'src/app/store/courses.reducer';
 import { Store, select } from '@ngrx/store';
-import { getAuthInfo } from 'src/app/store/auth.reducer';
-import { isAuthentificated, getAuthInfoAction } from 'src/app/store/auth.actions';
+import { getAuthInfoAction } from 'src/app/store/auth.actions';
 
 @Component({
   selector: 'angular-courses-list',
@@ -21,7 +18,6 @@ import { isAuthentificated, getAuthInfoAction } from 'src/app/store/auth.actions
 export class CoursesListComponent implements OnInit {
   public items$: Observable<ICourse[]>;
   countInc = 10;
-  sort = Sort;
 
   public searchStr = '';
 
@@ -29,7 +25,6 @@ export class CoursesListComponent implements OnInit {
     private cs: CourseService,
     private store: Store<State>,
     private breadcrumbService: BreadcrumbService,
-    private find: FindPipe,
     private router: Router
   ) { }
 
@@ -41,13 +36,7 @@ export class CoursesListComponent implements OnInit {
   private count = this.countInc;
 
   private searchStr$ = new Subject<string>();
-/*
-  private refreshItems(count: number = 0) {
-    this.searchStr$.next(this.searchStr);
-    this.refreshItems();
-    this.breadcrumbService.changeMessage("");
-  }
-*/
+
   ngOnInit() {
     this.count = this.countInc;
     this.store.dispatch(getAuthInfoAction());
@@ -76,9 +65,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   public loadMore() {
-//    this.count += this.countInc;
     this.store.dispatch(loadMore());
-//    this.refreshItems();
   }
 
   public search() {

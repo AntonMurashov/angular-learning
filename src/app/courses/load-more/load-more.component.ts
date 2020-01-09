@@ -15,7 +15,6 @@ export class LoadMoreComponent implements OnInit {
   }
 
   public loadMore() {
-    console.log('LoadMore clicked');
     this.onLoadMore.emit();
   }
 }
