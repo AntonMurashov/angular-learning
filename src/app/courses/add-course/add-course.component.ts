@@ -1,10 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { CourseService, Course, ICourse } from 'src/app/services/course.service';
+import { Course, ICourse } from 'src/app/services/course.service';
 import { DateService } from 'src/app/services/date.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
-import { map } from 'rxjs/operators';
+import { tap, mergeMap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { State } from 'src/app/store';
+import { selectMaxCourseId, selectCourse } from 'src/app/store/courses.reducer';
+import { getCourse, createCourse, updateCourse } from 'src/app/store/courses.actions';
 
 @Component({
   selector: 'angular-add-course',
@@ -26,10 +30,10 @@ export class AddCourseComponent implements OnInit {
   startDate: string;
 
   constructor(private route: ActivatedRoute,
-    private courseService: CourseService,
     private dateService: DateService,
     private breadcrumbService: BreadcrumbService,
-    private router: Router
+    private router: Router,
+    private store: Store<State>
   ) { }
 
   private navigateToList() {
@@ -38,25 +42,29 @@ export class AddCourseComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.route.params.pipe(
-      map((routeParams) => {
+      tap((routeParams) => {
         this.isCreate = (routeParams.id == undefined);
         if (!this.isCreate) {
-          this.courseService.getCourse(routeParams.id).subscribe(v => {
-            this.course = v;
-            if (this.course != undefined) {
+          this.store.dispatch(getCourse({ id: routeParams.id }));
+        }
+      }),
+      mergeMap(() => this.store.pipe(
+        select(selectCourse),
+        tap((course) => {
+          if (!this.isCreate) {
+            if (course != undefined) {
+              this.course = JSON.parse(JSON.stringify(course));
               this.startDate = this.course.date;
               this.breadcrumbService.changeMessage(this.course.name);
               this.isNewOrEdit = true;
             } else {
               this.isNewOrEdit = false;
             }
-          })
-        } else {
-          this.breadcrumbService.changeMessage("New course");
-          this.startDate = this.dateService.formatDate(new Date());
-        }
-        this.startDate = "";
-      })).subscribe();
+          } else {
+            this.breadcrumbService.changeMessage("New course");
+            this.startDate = ""; //this.dateService.formatDate(new Date());
+          }
+        })))).subscribe();
   }
 
   public isSaveDisabled(): boolean {
@@ -66,14 +74,17 @@ export class AddCourseComponent implements OnInit {
   public onSaveClick() {
     let action: Observable<Object>;
     if (this.course.id == undefined) {
-      this.courseService.getMaxId().subscribe(v => {
-        this.course.id = v + 1;
-      });
+      this.store.pipe(
+        select(selectMaxCourseId),
+        tap(v => this.course.id = v + 1)
+      );
     }
     this.course.date = this.startDate != '' ? this.startDate : this.dateService.formatDate(new Date());
-    action = this.isCreate ? this.courseService.createCourse(this.course)
-      : this.courseService.updateCourse(this.course.id, this.course);
-    action.subscribe(v => this.navigateToList());
+    this.store.dispatch(this.isCreate ?
+      createCourse({ course: this.course }) :
+      updateCourse({ id: this.course.id, course: this.course })
+    );
+    this.navigateToList();
   }
 
   public onCancelClick() {

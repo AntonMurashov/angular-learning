@@ -2,11 +2,13 @@ import { createReducer, on, createSelector, Action } from '@ngrx/store';
 import * as CoursesActions from './courses.actions';
 import { State } from '.';
 import { CoursesState } from './courses.state';
-import { Consts } from './../consts/consts'
+import { Consts } from './../consts/consts';
 
 const initialState: CoursesState = {
   listCount: Consts.COURSES_COUNT_INC,
-  courses: []
+  courses: [],
+  maxId: 0,
+  currentCourse: null
 };
 
 export const coursesReducer = createReducer(
@@ -15,6 +17,12 @@ export const coursesReducer = createReducer(
     return {
       ...state,
       courses: action.courses
+    };
+  }),
+  on(CoursesActions.getCourseSuccess, (state, action) => {
+    return {
+      ...state,
+      currentCourse: action.course
     };
   }),
   on(CoursesActions.loadMore, (state) => {
@@ -28,6 +36,12 @@ export const coursesReducer = createReducer(
       ...state,
       listCount: Consts.COURSES_COUNT_INC
     };    
+  }),
+  on(CoursesActions.getMaxCourseIdSuccess, (state, action) => {
+    return {
+      ...state,
+      maxId: action.id
+    };    
   })
 );
 
@@ -39,4 +53,12 @@ const selectCourses = (state: State) => state.courses;
 export const selectCoursesList = createSelector(
   selectCourses,
   (state: CoursesState) => state.courses
+)
+export const selectMaxCourseId = createSelector(
+  selectCourses,
+  (state: CoursesState) => state.maxId
+)
+export const selectCourse = createSelector(
+  selectCourses,
+  (state: CoursesState) => state.currentCourse
 )
