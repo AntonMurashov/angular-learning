@@ -14,6 +14,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { AuthorizationGuard } from '../services/authorization.guard';
 import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, 
@@ -24,7 +25,8 @@ import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
     FormsModule,
     CommonModule,
     CoreModule,
-    CoursesRoutingModule
+    CoursesRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [AuthorizationGuard]
 })
