@@ -28,10 +28,12 @@ export enum CoursesActions {
   GetMaxCourseIdError = '[Courses API] GetMaxCourseId Error',
 
   LoadMore = '[Courses Page] Load More',
+  ResetCourse = '[Courses Page] ResetCourse',
   ResetCoursesCount = '[Courses Page] ResetCoursesCount'
 }
 
 export const loadMore = createAction(CoursesActions.LoadMore);
+export const resetCourse = createAction(CoursesActions.ResetCourse);
 export const resetCoursesCount = createAction(CoursesActions.ResetCoursesCount);
 
 export const loadCourses = createAction(CoursesActions.LoadCourses,

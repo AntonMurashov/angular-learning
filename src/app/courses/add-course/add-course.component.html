@@ -1,5 +1,5 @@
-<form [formGroup]="form" (ngSubmit)="onSaveClick()">
-    <div class="add-course" *ngIf="isNewOrEdit">
+<form [formGroup]="form" (ngSubmit)="onSaveClick()">        
+        <div class="add-course" *ngIf="isNewOrEdit">
         <div class="title" *ngIf="isCreate">New course</div>
         <div class="title" *ngIf="!isCreate">Edit course</div>
 
@@ -17,11 +17,7 @@
         </div>
         <textarea rows="5" class="row description" [ngClass]="{ 'error-input':!description.valid}" formControlName="description"></textarea>
 
-        <div class="caption">
-            <span class="label">Date</span>
-            <span class="error" *ngIf="date.errors?.required && date.touched">This field is required</span>
-        </div>
-        <input class="row input date" [ngClass]="{ 'error-input':!date.valid}" formControlName="date">
+        <course-date [formControl]="date"></course-date>
 
         <div class="caption">
             <span class="label">Duration</span>

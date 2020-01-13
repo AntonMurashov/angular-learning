@@ -2,14 +2,14 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Course, ICourse } from 'src/app/services/course.service';
 import { DateService } from 'src/app/services/date.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
-import { tap, mergeMap, map } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { State } from 'src/app/store';
 import { selectMaxCourseId, selectCourse } from 'src/app/store/courses.reducer';
-import { getCourse, createCourse, updateCourse } from 'src/app/store/courses.actions';
-import { FormControl, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { getCourse, createCourse, updateCourse, resetCourse } from 'src/app/store/courses.actions';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'angular-add-course',
@@ -32,10 +32,6 @@ export class AddCourseComponent implements OnInit {
 
   form: FormGroup;
 
-  private createForm(model: ICourse): FormGroup {
-    return this.fb.group(model);
-  }
-
   constructor(private route: ActivatedRoute,
     private dateService: DateService,
     private breadcrumbService: BreadcrumbService,
@@ -46,9 +42,9 @@ export class AddCourseComponent implements OnInit {
     this.form = fb.group({
       "name": ["", [Validators.required, Validators.maxLength(50)]],
       "description": ["", [Validators.required, Validators.maxLength(500)]],
-      "date": ["", Validators.required],
+      "date": [],
       "length": ["", Validators.required],
-      "authors": ["", Validators.required]
+      "authors": ["", Validators.required],
     });
   }
 
@@ -64,17 +60,16 @@ export class AddCourseComponent implements OnInit {
           this.store.dispatch(getCourse({ id: routeParams.id }));
         }
       }),
-      mergeMap(() => this.store.pipe(
+      switchMap(() => this.store.pipe(
         select(selectCourse),
         tap((course) => {
           if (!this.isCreate) {
             if (course != undefined) {
               this.name.setValue(course.name);
-              this.description.setValue(course.description);
-              this.date.setValue(course.date);
+              this.description.setValue(course.description);              
+              this.date.setValue(this.dateService.convertFromISO(course.date));
               this.length.setValue(course.length);
               this.authors.setValue(course.authors);
-              //this.form.setValue(course);
               this.course = JSON.parse(JSON.stringify(course));
               this.startDate = this.course.date;
               this.breadcrumbService.changeMessage(this.course.name);
@@ -84,14 +79,9 @@ export class AddCourseComponent implements OnInit {
             }
           } else {
             this.breadcrumbService.changeMessage("New course");
-            this.startDate = ""; //this.dateService.formatDate(new Date());
+            this.startDate = "";
           }
         })))).subscribe();
-  /*    this.form.valueChanges.pipe(
-        map((value) => {
-          console.log(value);
-          console.log(this.name);
-        })).subscribe();*/
   }
 
   public isSaveDisabled(): boolean {
@@ -99,7 +89,7 @@ export class AddCourseComponent implements OnInit {
   }
 
   public onSaveClick() {
-    console.log('saving');
+    this.date.setValue(this.dateService.convertToISO(this.date.value));
     this.course = {
       ...this.course,
       ...this.form.value
@@ -110,7 +100,6 @@ export class AddCourseComponent implements OnInit {
         tap(v => this.course.id = v + 1)
       );
     }
-    this.course.date = this.startDate != '' ? this.startDate : this.dateService.formatDate(new Date());
     this.store.dispatch(this.isCreate ?
       createCourse({ course: this.course }) :
       updateCourse({ id: this.course.id, course: this.course })
@@ -123,6 +112,7 @@ export class AddCourseComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.store.dispatch(resetCourse());
     this.subscription.unsubscribe();
   }
 

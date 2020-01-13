@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { CoursesEffects } from './store/courses.effects';
 import { AuthEffects } from './store/auth.effects';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AuthEffects } from './store/auth.effects';
       useClass: TokenInterceptor,
       multi: true
     },
-    AuthorizationGuard
+    AuthorizationGuard,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
