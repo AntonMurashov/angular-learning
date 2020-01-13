@@ -43,7 +43,7 @@ export class AddCourseComponent implements OnInit {
       "name": ["", [Validators.required, Validators.maxLength(50)]],
       "description": ["", [Validators.required, Validators.maxLength(500)]],
       "date": [],
-      "length": ["", Validators.required],
+      "length": [],
       "authors": ["", Validators.required],
     });
   }

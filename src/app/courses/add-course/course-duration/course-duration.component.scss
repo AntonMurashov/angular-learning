@@ -20,6 +20,17 @@
     font-size: 12px;
   }  
   
+  .row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: left;
+    &:last-child {
+      justify-content: flex-start;
+    }
+  }
+
   .input {
     width: 100px;
     height: 32px;
@@ -33,7 +44,7 @@
     font-style: normal;
     line-height: 1.71;
     letter-spacing: 0.22px;
-    color: grey;  
+    color: grey;
   }
   
   .error-input {
@@ -45,6 +56,15 @@
     outline: none;
   }
   
+  .duration {
+    padding-left: 20px;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    color: grey;
+  }
   
 
 

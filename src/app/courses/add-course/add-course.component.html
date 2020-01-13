@@ -19,14 +19,7 @@
 
         <course-date [formControl]="date"></course-date>
 
-        <div class="caption">
-            <span class="label">Duration</span>
-            <span class="error" *ngIf="length.errors?.required && length.touched">This field is required</span>
-        </div>
-        <div class="row">
-            <input pattern="[0-9]*" class="input date" [ngClass]="{ 'error-input':!length.valid}" formControlName="length">
-            <div class="duration">{{course.length | duration}}</div>
-        </div>
+        <course-duration [formControl]="length"></course-duration>
 
         <div class="caption">
             <span class="label">Authors</span>
