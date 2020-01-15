@@ -1,30 +1,37 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { AuthorizationService, IAuthMessage } from 'src/app/services/authorization.service';
-import { Subscription, Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { State } from 'src/app/store';
+import { logout, isAuthentificated, loadToken, loadUserInfo } from 'src/app/store/auth.actions';
+import { getUserInfo, getIsAuthentificated } from 'src/app/store/auth.reducer';
 
 @Component({
   selector: 'angular-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  isAuth$: Observable<boolean>;
-  getUsername$: Observable<string>;
+export class HeaderComponent implements OnInit {
 
-  constructor(private authService: AuthorizationService) {
-  }
+  isAuth$: Observable<boolean>;
+  userName$: Observable<string>;
+
+  constructor(
+    private store: Store<State>,
+    ) { }
 
   ngOnInit() {
-    this.isAuth$ = this.authService.checkAuth.asObservable();
-    this.getUsername$ = this.authService.getUsername;
-  }
-
-  ngDoCheck() {
-    this.authService.refreshAuthInfo();
+    this.refreshAuthInfo();
+    this.isAuth$ = this.store.pipe(select(getIsAuthentificated));
+    this.userName$ = this.store.pipe(select(getUserInfo));
   }
 
   exit() {
-    this.authService.logout();
+    this.store.dispatch(logout()); 
+  }
+  
+  private refreshAuthInfo() {
+    this.store.dispatch(loadToken());
+    this.store.dispatch(isAuthentificated());
+    this.store.dispatch(loadUserInfo());
   }
 }

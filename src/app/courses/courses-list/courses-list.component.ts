@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Sort } from 'src/app/enums/sort.enum';
-import { CourseService, ICourse } from 'src/app/services/course.service';
+import { ICourse } from 'src/app/services/course.service';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
-import { FindPipe } from 'src/app/pipes/find.pipe';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { switchMap, tap, filter, map, debounceTime } from 'rxjs/operators';
+import { Observable, Subject, timer } from 'rxjs';
+import { map, mergeMap, debounce } from 'rxjs/operators';
+import { loadCourses, loadMore, deleteCourse } from 'src/app/store/courses.actions';
+import { State } from 'src/app/store';
+import { selectCoursesList } from 'src/app/store/courses.reducer';
+import { Store, select } from '@ngrx/store';
+import { loadUserInfo } from 'src/app/store/auth.actions';
 
 @Component({
   selector: 'angular-courses-list',
@@ -14,34 +17,39 @@ import { switchMap, tap, filter, map, debounceTime } from 'rxjs/operators';
 })
 export class CoursesListComponent implements OnInit {
   public items$: Observable<ICourse[]>;
-  sort = Sort;
-  countInc = 10;
 
   public searchStr = '';
 
-  constructor(private cs: CourseService, private breadcrumbService: BreadcrumbService, private find: FindPipe, private router: Router) {
-  }
-
-  private count = this.countInc;
-
-  private searchStr$ = new Subject<string>();
-
-  private refreshItems(count: number = 0) {
-    this.searchStr$.next(this.searchStr);
-  }
-
-  ngOnInit() {
-    this.count = this.countInc;
-    this.breadcrumbService.changeMessage("");
+  constructor(
+    private store: Store<State>,
+    private breadcrumbService: BreadcrumbService,
+    private router: Router
+  ) { 
     this.items$ = this.searchStr$.pipe(
-      debounceTime(1000),
-      map(v => v.length > 2 ? v : ''),
-      switchMap(v => this.cs.getCourses(0, this.count, v))
+      debounce(v => timer(v == null ? 0 : 2000)),
+      map(v => v != null && v.length > 2 ? v : ''),
+      mergeMap(v => this.updateCourses(v))
     );
   }
 
+  private refreshItems() {
+    this.updateCourses(this.searchStr).subscribe();
+  }
+
+  private searchStr$ = new Subject<string>();
+
+  ngOnInit() {
+    this.store.dispatch(loadUserInfo());
+  }
+
+  private updateCourses(searchStr: string): Observable<ICourse[]> {
+    this.store.dispatch(loadCourses({searchStr: searchStr}));
+    return this.store.pipe(select(selectCoursesList));
+  }
+
   ngAfterViewInit() {
-    this.refreshItems();
+    this.breadcrumbService.changeMessage("");
+    this.searchStr$.next(null);
   }
 
   public addCourse() {
@@ -49,17 +57,16 @@ export class CoursesListComponent implements OnInit {
   }
 
   public onDeleteCourse(id: number): void {
-    this.cs.deleteCourse(id).subscribe(v => {
-      this.refreshItems();
-    });
+    this.store.dispatch(deleteCourse({id: id}));
+    this.refreshItems();
   }
 
   public loadMore() {
-    this.count += this.countInc;
+    this.store.dispatch(loadMore());
     this.refreshItems();
   }
 
   public search() {
-    this.refreshItems();
+    this.searchStr$.next(this.searchStr);
   }
 }

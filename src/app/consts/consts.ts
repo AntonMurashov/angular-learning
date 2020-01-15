@@ -6,4 +6,6 @@ export class Consts {
 
     public static LS_USERNAME = 'username';
     public static LS_TOKEN = 'token';
+
+    public static COURSES_COUNT_INC = 10;
 }

@@ -5,7 +5,7 @@
     <ng-container *ngIf="isAuth$ | async">
         <div class="profile user">
             <img src="assets/img/ic-user.svg">
-            {{getUsername$ | async}}
+            {{userName$ | async}}
         </div>
         <div class="profile" (click)="exit()">
             <img class="exit" src="assets/img/ic-exit.svg">

@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/store';
+import { login } from 'src/app/store/auth.actions';
 
 @Component({
   selector: 'angular-login',
@@ -12,7 +14,7 @@ export class LoginComponent implements OnInit {
   public email = '';
   public password = '';
 
-  constructor(private authService: AuthorizationService) {
+  constructor(private store: Store<State>,) {
   }
 
   ngOnInit(): void {
@@ -23,6 +25,6 @@ export class LoginComponent implements OnInit {
   }
 
   public onLoginClick() {
-    this.authService.login(this.email, this.password);
+    this.store.dispatch(login({username: this.email, password: this.password})); 
   }
 }

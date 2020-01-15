@@ -1,11 +1,11 @@
-import { Injectable, ChangeDetectorRef } from '@angular/core';
-import { Subject, Observable, of, Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Subject, Observable, of } from 'rxjs';
 import { Consts } from '../consts/consts';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { LoadingBlockService } from './loading-block.service';
+import { BACKEND_PATH } from 'src/environments/environment';
 
 export interface IAuthMessage {
   isAuthentificated: boolean;
@@ -28,10 +28,17 @@ interface IUserInfo {
 })
 export class AuthorizationService {
 
-  constructor(private router: Router, private http: HttpClient, private loadingBlockService: LoadingBlockService) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private loadingBlockService: LoadingBlockService,
+  ) { }
+
+  private buildUserName(userInfo: IUserInfo): string {
+    return userInfo.name.first + ' ' + userInfo.name.last;
+  }
 
   public checkAuth = new Subject<boolean>();
-  public getUsername = this.getUserInfo().pipe(map(v => v.name.first + ' ' + v.name.last));
 
   public isAuthentificated(): boolean {
     return this.getToken() != null;
@@ -46,35 +53,53 @@ export class AuthorizationService {
   }
 
   public getUserInfo(): Observable<IUserInfo> {
-    return this.loadingBlockService.callWithLoadBlock(() =>
-      this.http.post<IUserInfo>(`http://localhost:3004/auth/userinfo`, {}));
+    return this.loadingBlockService.callWithLoadBlock(() => this.http.post<IUserInfo>(`${BACKEND_PATH}/auth/userinfo`, {}));
   }
 
-  public login(login: string, password: string) {
-    console.log('logging in');
-    this.loadingBlockService.callWithLoadBlock<ILoginResult>(() =>
-      this.http.post<ILoginResult>(`http://localhost:3004/auth/login`, {
+  public login(login: string, password: string): Observable<IAuthMessage> {
+    return this.loadingBlockService.callWithLoadBlock<ILoginResult>(() =>
+      this.http.post<ILoginResult>(`${BACKEND_PATH}/auth/login`, {
         "login": login,
         "password": password
       })).pipe(map(
         v => {
-          console.log(v.token);
           this.setToken(v.token);
-          this.refreshAuthInfo();
           this.router.navigate(["courses"]);
-          console.log('Logged in successfully');
-        })).subscribe();
+          return {
+            isAuthentificated: true
+          };
+        }));
   }
 
-  public logout() {
+  public logout$(): Observable<IAuthMessage> {
     localStorage.removeItem(Consts.LS_USERNAME);
     localStorage.removeItem(Consts.LS_TOKEN);
-    this.refreshAuthInfo();
     this.router.navigate(["login"]);
+    return of({ isAuthentificated: false, userName: null });
+  }
+
+  public isAuth$(): Observable<boolean> {
+    return of(this.isAuthentificated());
+  }
+
+  public getToken$(): Observable<string> {
+    return of(this.getToken());
+  }
+
+  public refreshAuthInfo$(): Observable<IAuthMessage> {
+    this.checkAuth.next(this.isAuthentificated());
+    return this.isAuthentificated() ?
+      this.getUserInfo().pipe(
+        map((v) => {
+          return {
+            isAuthentificated: this.isAuthentificated(),
+            userName: this.buildUserName(v)
+          }
+        })
+      ) : of({ isAuthentificated: false, userName: null });
   }
 
   public refreshAuthInfo() {
     this.checkAuth.next(this.isAuthentificated());
   }
-
 }
