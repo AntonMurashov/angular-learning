@@ -1,19 +1,18 @@
 <form [formGroup]="form" (ngSubmit)="onSaveClick()">        
         <div class="add-course" *ngIf="isNewOrEdit">
-        <div class="title" *ngIf="isCreate">New course</div>
-        <div class="title" *ngIf="!isCreate">Edit course</div>
+        <div class="title">{{isCreate ? 'New course' : 'Edit course'}}</div>
 
         <div class="caption">
             <span class="label">Name</span>
-            <span class="error" *ngIf="name.errors?.required && name.touched">This field is required</span>
-            <span class="error" *ngIf="name.errors?.maxlength">Value is too long</span>
+            <span class="error">{{inputHelperService.checkRequired(name)}}</span>
+            <span class="error">{{inputHelperService.checkMaxLength(name)}}</span>
         </div>
         <input class="row input" [ngClass]="{ 'error-input':!name.valid}" type="text" formControlName="name">
 
         <div class="caption">
             <span class="label">Description</span>
-            <span class="error" *ngIf="description.errors?.required && description.touched">This field is required</span>
-            <span class="error" *ngIf="description.errors?.maxlength">Value is too long</span>
+            <span class="error">{{inputHelperService.checkRequired(description)}}</span>
+            <span class="error">{{inputHelperService.checkMaxLength(description)}}</span>
         </div>
         <textarea rows="5" class="row description" [ngClass]="{ 'error-input':!description.valid}" formControlName="description"></textarea>
 
@@ -23,7 +22,7 @@
 
         <div class="caption">
             <span class="label">Authors</span>
-            <span class="error" *ngIf="authors.errors?.required && authors.touched">This field is required</span>
+            <span class="error">{{inputHelperService.checkRequired(authors)}}</span>
         </div>
         <input class="row input" [ngClass]="{ 'error-input':!authors.valid}" formControlName="authors">
 

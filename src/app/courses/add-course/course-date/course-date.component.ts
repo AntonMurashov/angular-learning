@@ -1,6 +1,7 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, 
   Validator, AbstractControl, ValidationErrors } from '@angular/forms';
+import { InputHelperService } from 'src/app/helpers/input-helper.service';
 
 @Component({
   selector: 'course-date',
@@ -26,27 +27,27 @@ export class CourseDateComponent implements ControlValueAccessor, Validator {
 
   startDate: string;
 
-  constructor() { }
+  constructor(public inputHelperService: InputHelperService) { }
 
   validate(control: AbstractControl): ValidationErrors | null {
     let DATE_REGEXP = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;    
     
-    if (this.startDate == '') {
+    if (!this.startDate) {
       return {
-        dateRequiredError: {
-          valid: false
+        required: {
+          valid: true
         }
       };
     }
     return DATE_REGEXP.test(this.startDate) ? null : {
       incorrectDateFormat: {
-        valid: false
+        valid: true
       }
     };
   }
 
   private onChange = (_: any) => { };
-  private onTouch = () => { };
+  public onTouch = () => { };
 
   writeValue(obj: any): void {
     this.startDate = obj;

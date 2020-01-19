@@ -10,6 +10,7 @@ import { State } from 'src/app/store';
 import { selectMaxCourseId, selectCourse } from 'src/app/store/courses.reducer';
 import { getCourse, createCourse, updateCourse, resetCourse } from 'src/app/store/courses.actions';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { InputHelperService } from 'src/app/helpers/input-helper.service';
 
 @Component({
   selector: 'angular-add-course',
@@ -37,7 +38,8 @@ export class AddCourseComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private router: Router,
     private store: Store<State>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public inputHelperService: InputHelperService
   ) { 
     this.form = fb.group({
       "name": ["", [Validators.required, Validators.maxLength(50)]],

@@ -44,7 +44,6 @@ import { DatePipe } from '@angular/common';
       useClass: TokenInterceptor,
       multi: true
     },
-    AuthorizationGuard,
     DatePipe
   ],
   bootstrap: [AppComponent]

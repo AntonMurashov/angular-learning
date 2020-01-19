@@ -1,6 +1,7 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, AbstractControl, ValidationErrors, 
   ControlValueAccessor, Validator } from '@angular/forms';
+import { InputHelperService } from 'src/app/helpers/input-helper.service';
 
 @Component({
   selector: 'course-duration',
@@ -25,28 +26,28 @@ export class CourseDurationComponent implements ControlValueAccessor, Validator 
 
   length: string;
 
-  constructor() { }
+  constructor(public inputHelperService: InputHelperService) { }
 
   validate(control: AbstractControl): ValidationErrors | null {
     let NUMBER_REGEXP = /^[0-9]*$/gm;    
-    
-    if (this.length == '') {
+
+    if (!this.length) {
       return {
-        requiredError: {
-          valid: false
+        required: {
+          valid: true
         }
       };
     }
 
     return NUMBER_REGEXP.test(this.length) ? null : {
       incorrectSymbols: {
-        valid: false
+        valid: true
       }
     }; 
   }
 
   private onChange = (_: any) => { };
-  private onTouch = () => { };
+  public onTouch = () => { };
 
   writeValue(obj: any): void {
     this.length = obj;
