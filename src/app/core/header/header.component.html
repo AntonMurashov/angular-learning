@@ -9,7 +9,11 @@
         </div>
         <div class="profile" (click)="exit()">
             <img class="exit" src="assets/img/ic-exit.svg">
-            Log off
+            {{ "SHARED.HEADER.LOGOUT" | translate }}
         </div>
     </ng-container>
+    <select [(ngModel)]="language" class="language" (change)="onLanguageChanged()">
+        <option value="en">English</option>
+        <option value="sv">Svenska</option>
+    </select>
 </div>

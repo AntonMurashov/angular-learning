@@ -1,0 +1,33 @@
+{
+    "PAGES": {
+      "COURSES_LIST": {
+        "BTN_ADD_COURSE": "Skapa kursen",
+        "BTN_EDIT_COURSE": "Ändra",
+        "BTN_DELETE_COURSE": "Ta bort"
+      },
+      "LOGIN": {
+          "EMAIL": "E-post",
+          "PASSWORD": "Lösenord",
+          "ENTER_EMAIL": "Skriv in e-mail",
+          "ENTER_PASSWORD": "Skriv in lösenord",
+          "FORGOT": "Glömt ditt lösenord?",
+          "REQUIRED": "obligatoriskt"
+      }
+    },
+    "SHARED": {
+        "BREADCRUMB": {
+            "LIST": "Kurser"
+        },
+        "HEADER": {
+            "LOGOUT": "Logga ut"
+        },
+        "FOOTER": {
+            "ARR": "Med ensamrätt"
+        },
+        "BUTTON": {
+            "LOGIN": "Logga in",
+            "SAVE": "Spara",
+            "CANCEL": "Avbryt"           
+        }
+    }
+  }

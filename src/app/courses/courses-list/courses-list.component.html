@@ -4,7 +4,7 @@
         <input placeholder="Text to search" class="input-search" [(ngModel)]="searchStr" (ngModelChange)="search()">
     </div>
     <div>
-        <button class="add-button" (click)="addCourse()">Add course</button>
+        <button class="add-button" (click)="addCourse()">{{ "PAGES.COURSES_LIST.BTN_ADD_COURSE" | translate }}</button>
     </div>
 </div>
 <ng-container *ngIf="items$ | async as items">

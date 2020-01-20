@@ -17,6 +17,7 @@ import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CourseDateComponent } from './add-course/course-date/course-date.component';
 import { CourseDurationComponent } from './add-course/course-duration/course-duration.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, 
@@ -28,7 +29,8 @@ import { CourseDurationComponent } from './add-course/course-duration/course-dur
     CommonModule,
     CoreModule,
     CoursesRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
   providers: [AuthorizationGuard]
 })

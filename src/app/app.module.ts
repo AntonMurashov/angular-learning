@@ -6,7 +6,7 @@ import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthorizationGuard } from './services/authorization.guard';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { TokenInterceptor } from './services/authorization.interceptor';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store';
@@ -16,6 +16,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { CoursesEffects } from './store/courses.effects';
 import { AuthEffects } from './store/auth.effects';
 import { DatePipe } from '@angular/common';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { SettingsEffects } from './store/settings.effects';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -35,7 +42,14 @@ import { DatePipe } from '@angular/common';
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AuthEffects, CoursesEffects]),
+    EffectsModule.forRoot([AuthEffects, CoursesEffects, SettingsEffects]),
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+  }),
   ],
   providers: [
     AuthorizationGuard,
