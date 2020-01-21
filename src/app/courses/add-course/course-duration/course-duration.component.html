@@ -1,0 +1,10 @@
+<div class="caption">
+    <span class="label">Duration</span>
+    <span class="error">{{inputHelperService.checkRequired(formControl)}}</span>
+    <span class="error" *ngIf="formControl.errors?.incorrectSymbols">Only numbers are allowed</span>
+</div>
+<div class="row">
+    <input class="input" [ngClass]="{ 'error-input':!formControl.valid}" [value]="length"
+        (change)="onDataChange($event)" (keyup)="onKeyUp($event)" (click)="onTouch()">
+    <div class="duration">{{length | duration}}</div>
+</div> 

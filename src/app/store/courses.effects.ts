@@ -5,7 +5,7 @@ import { catchError, mergeMap, map, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { loadCourses, deleteCourse, deleteCourseSuccess, deleteCourseError, loadCoursesSuccess, loadCoursesError, 
   getMaxCourseId, getMaxCourseIdSuccess, getCourse, getCourseSuccess, getCourseError, createCourse, updateCourse, 
-  createCourseSuccess, createCourseError, updateCourseSuccess, updateCourseError } from './courses.actions';
+  createCourseSuccess, createCourseError, updateCourseSuccess, updateCourseError, getMaxCourseIdError } from './courses.actions';
 import { Store } from '@ngrx/store';
 import { State } from '.';
 
@@ -61,7 +61,7 @@ export class CoursesEffects {
     ofType(getMaxCourseId),
     mergeMap(() => this.courseService.getMaxId().pipe(
       map(id => getMaxCourseIdSuccess({ id: id })),
-      catchError(error => of(deleteCourseError({ error }))))
+      catchError(error => of(getMaxCourseIdError({ error }))))
     )
   )
 

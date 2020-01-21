@@ -1,26 +1,34 @@
-<div class="add-course" *ngIf="isNewOrEdit">
-    <div class="title" *ngIf="isCreate">New course</div>
-    <div class="title" *ngIf="!isCreate">Edit course</div>
+<form [formGroup]="form" (ngSubmit)="onSaveClick()">        
+        <div class="add-course" *ngIf="isNewOrEdit">
+        <div class="title">{{isCreate ? 'New course' : 'Edit course'}}</div>
 
-    <div class="col caption">Name</div>
-    <input class="row input" [(ngModel)]="course.name">
+        <div class="caption">
+            <span class="label">Name</span>
+            <span class="error">{{inputHelperService.checkRequired(name)}}</span>
+            <span class="error">{{inputHelperService.checkMaxLength(name)}}</span>
+        </div>
+        <input class="row input" [ngClass]="{ 'error-input':!name.valid}" type="text" formControlName="name">
 
-    <div class="col caption">Description</div>
-    <textarea name="Text1" rows="5" class="row description" [(ngModel)]="course.description"></textarea>
+        <div class="caption">
+            <span class="label">Description</span>
+            <span class="error">{{inputHelperService.checkRequired(description)}}</span>
+            <span class="error">{{inputHelperService.checkMaxLength(description)}}</span>
+        </div>
+        <textarea rows="5" class="row description" [ngClass]="{ 'error-input':!description.valid}" formControlName="description"></textarea>
 
-    <div class="col caption">Date</div>
-    <input class="row input date" [(ngModel)]="startDate">
+        <course-date [formControl]="date"></course-date>
 
-    <div class="col caption">Duration</div>
-    <div class="row">
-        <input pattern="[0-9]*" class="input date" [(ngModel)]="course.length">
-        <div class="duration">{{course.length | duration}}</div>
+        <course-duration [formControl]="length"></course-duration>
+
+        <div class="caption">
+            <span class="label">Authors</span>
+            <span class="error">{{inputHelperService.checkRequired(authors)}}</span>
+        </div>
+        <input class="row input" [ngClass]="{ 'error-input':!authors.valid}" formControlName="authors">
+
+        <button class="button save-button" [disabled]="!form.valid" type="submit"
+            [class.button-disabled]="!form.valid">Save</button>
+        <button class="button cancel-button" type="button" (click)="onCancelClick()">Cancel</button>
     </div>
-
-    <div class="col caption">Authors</div>
-    <input class="row input" [(ngModel)]="course.authors">
-
-    <button class="button save-button" [disabled]="isSaveDisabled()" (click)="onSaveClick()" [class.button-disabled]="isSaveDisabled()">Save</button>
-    <button class="button cancel-button" (click)="onCancelClick()">Cancel</button>
-</div>
-<angular-not-found *ngIf="!isNewOrEdit"></angular-not-found>
+    <angular-not-found *ngIf="!isNewOrEdit"></angular-not-found>
+</form>

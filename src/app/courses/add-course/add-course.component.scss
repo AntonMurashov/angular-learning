@@ -9,13 +9,13 @@
     color: rgb(60, 60, 60);
   }
   
-  .col {
+  .caption {
     flex: 1;
     display: flexbox;
     align-items: center;
     align-content: center;
     justify-content: flex-start;
-    color: rgb(90, 90, 90);
+    padding-top: 20px;
   }
   
   .row {
@@ -28,11 +28,17 @@
       justify-content: flex-end;
     }
   }
-  
-  .caption {
-    padding-top: 20px;
+
+  .label {
+    color: rgb(90, 90, 90);
     font-size: 16px;
     font-weight: bold;
+  }
+
+  .error {
+    margin-left: 10px;
+    color: red;
+    font-size: 12px;
   }
   
   .description {
@@ -73,6 +79,15 @@
     line-height: 1.71;
     letter-spacing: 0.22px;
     color: grey;
+  }
+  
+  .error-input {
+    border: 1px solid red;
+    outline: none;
+  }  
+
+  .error-input:focus {
+    outline: none;
   }
   
   .date {

@@ -36,6 +36,12 @@ export const coursesReducer = createReducer(
       ...state,
       listCount: Consts.COURSES_COUNT_INC
     };    
+  }),  
+  on(CoursesActions.resetCourse, (state) => {
+    return {
+      ...state,
+      currentCourse: null
+    };    
   }),
   on(CoursesActions.getMaxCourseIdSuccess, (state, action) => {
     return {

@@ -14,17 +14,21 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { AuthorizationGuard } from '../services/authorization.guard';
 import { BreadcrumbPipe } from '../pipes/breadcrumb.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CourseDateComponent } from './add-course/course-date/course-date.component';
+import { CourseDurationComponent } from './add-course/course-duration/course-duration.component';
 
 @NgModule({
   declarations: [CoursesComponent, CourseItemComponent, LoadMoreComponent, CheckDateDirective, 
     DurationPipe, BreadcrumbPipe,
-    NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent],
+    NoItemsComponent, AddCourseComponent, BreadcrumbComponent, CoursesListComponent, CourseDateComponent, CourseDurationComponent],
   exports: [CoursesComponent, CourseItemComponent, LoadMoreComponent, BreadcrumbComponent],
   imports: [
     FormsModule,
     CommonModule,
     CoreModule,
-    CoursesRoutingModule
+    CoursesRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [AuthorizationGuard]
 })

@@ -6,8 +6,12 @@ import { Consts } from '../consts/consts';
 })
 export class DurationPipe implements PipeTransform {
 
-  transform(duration: number): string {
-    if ((duration == undefined) || (isNaN(duration))) {
+  transform(length: string): string {
+    if (!length) {
+      return null;
+    }
+    let duration = +length;
+    if ((isNaN(duration)) || (duration <= 0)) {
       return null;
     }
     if (duration < Consts.MIN_IN_HOUR) {

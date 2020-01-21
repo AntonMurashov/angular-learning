@@ -1,0 +1,70 @@
+  
+  .caption {
+    flex: 1;
+    display: flexbox;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding-top: 20px;
+  }
+  
+  .label {
+    color: rgb(90, 90, 90);
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .error {
+    margin-left: 10px;
+    color: red;
+    font-size: 12px;
+  }  
+  
+  .row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: left;
+    &:last-child {
+      justify-content: flex-start;
+    }
+  }
+
+  .input {
+    width: 100px;
+    height: 32px;
+    border-radius: 3px;
+    padding: 0 0;
+    border: solid 1px #d9dbe3;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: 0.22px;
+    color: grey;
+  }
+  
+  .error-input {
+    border: 1px solid red;
+    outline: none;
+  }
+
+  .error-input:focus {
+    outline: none;
+  }
+  
+  .duration {
+    padding-left: 20px;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    color: grey;
+  }
+  
+
+

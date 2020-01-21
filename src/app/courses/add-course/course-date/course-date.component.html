@@ -1,0 +1,7 @@
+<div class="caption">
+    <span class="label">Date</span>
+    <span class="error">{{inputHelperService.checkRequired(formControl)}}</span>
+    <span class="error" *ngIf="formControl.errors?.incorrectDateFormat">Date format should be dd/mm/yyyy</span>
+</div>
+<input class="input" [ngClass]="{ 'error-input':!formControl.valid}" [value]="startDate"
+    (change)="onDataChange($event)" (keyup)="onKeyUp($event)" (exit)="onDataChange($event)" (click)="onTouch()">
