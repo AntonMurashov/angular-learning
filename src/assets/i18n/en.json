@@ -1,0 +1,33 @@
+{
+    "PAGES": {
+        "COURSES_LIST": {
+            "BTN_ADD_COURSE": "Add course",
+            "BTN_EDIT_COURSE": "Edit",
+            "BTN_DELETE_COURSE": "Delete"
+        },
+        "LOGIN": {
+            "EMAIL": "E-mail",
+            "PASSWORD": "Password",
+            "ENTER_EMAIL": "Enter e-mail",
+            "ENTER_PASSWORD": "Enter password",
+            "FORGOT": "Forgot password?",
+            "REQUIRED": "required"
+        }
+    },
+    "SHARED": {
+        "BREADCRUMB": {
+            "LIST": "Courses"
+        },
+        "HEADER": {
+            "LOGOUT": "Log off"
+        },
+        "FOOTER": {
+            "ARR": "All rights reserved"
+        },
+        "BUTTON": {
+            "LOGIN": "Login",
+            "SAVE": "Save",
+            "CANCEL": "Cancel"           
+        }
+    }
+}
